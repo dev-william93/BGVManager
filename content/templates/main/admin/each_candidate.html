@@ -1,0 +1,471 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+
+{% block styles %}
+<style>
+    table {
+        text-align: center;
+    }
+
+    th,
+    tr,
+    td {
+        border: 1px solid rgba(0, 0, 0, .125);
+        padding: 0.5rem;
+    }
+
+    th {
+        font-size: larger;
+    }
+
+    .inprogress {
+        font-weight: bold;
+        color: #ffc107;
+    }
+
+    .submitted {
+        font-weight: bold;
+        color: #6c757d;
+    }
+
+    .rejected {
+        font-weight: bold;
+        color: #dc3545;
+    }
+
+    .success {
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .main_container {
+        width: 75%;
+        margin: auto;
+    }
+
+    .styleRed {
+        background-color: #ff0000;
+    }
+
+    .styleYellow {
+        background-color: #ffe509;
+    }
+
+    .styleOrange {
+        background-color: #ffa500;
+    }
+
+    .styleGreen {
+        background-color: #008000;
+    }
+
+    .styleRed,
+    .styleYellow,
+    .styleOrange,
+    .styleGreen {
+        width: 15px;
+        height: 15px;
+        align-self: center;
+        margin-right: 10px;
+    }
+
+    select {
+        width: fit-content !important;
+    }
+
+    #id_education_remark,
+    #id_employment_remark,
+    #id_passport_remark,
+    #id_address_remark,
+    #id_court_remark,
+    #education_verified-clear_id,
+    #employment_verified-clear_id,
+    #passport_verified-clear_id,
+    #address_verified-clear_id,
+    #ecourt_verified-clear_id,
+    #id_overAll_status,
+    label[for="id_education_remark"],
+    label[for="id_employment_remark"],
+    label[for="id_passport_remark"],
+    label[for="id_address_remark"],
+    label[for="id_court_remark"],
+    label[for="id_overAll_status"],
+    label[for="education_verified-clear_id"],
+    label[for="employment_verified-clear_id"],
+    label[for="passport_verified-clear_id"],
+    label[for="address_verified-clear_id"],
+    label[for="ecourt_verified-clear_id"]{
+        display: none;
+    }
+
+    input::file-selector-button {
+        border: 0;
+    }
+
+    @media screen and (max-width: 800px) {
+        .main_container {
+            width: 100%
+        }
+    }
+</style>
+{% endblock %}
+
+{% if request.user.is_authenticated %}
+
+<div class="m-auto" style="display:flex; justify-content: center; margin: auto;">
+    <div class="w-100" style="align-self: center; ">
+        <div class="w-100" class="customForm">
+            <h3 class="card-header rounded">
+                {{employee_record.candidate.first_name|title}} {{employee_record.candidate.last_name|title}}
+                BGV
+            </h3>
+            <form class="w-100" id="candidateForm" method='post' enctype="multipart/form-data" onsubmit="formSubmit()">
+                {% csrf_token %}
+                <div class="formpad">
+                    <div class="mt-2 border border-dark rounded p-3">
+                        <div class="d-flex justify-content-between">
+                            <h5>
+                                Employment History (Starting From Latest)
+                            </h5>
+                            <!-- <button type="submit" style="height: fit-content;" class="btn btn-warning"> Save </button> -->
+                            <select class="form-control" name="employment_status"
+                                id="id_employment_status">
+                                <option value="submitted">Submitted</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="inprogress">In Progress</option>
+                                <option value="success">Success</option>
+                            </select>
+                        </div>
+                        <div id="employment_container">
+
+                        </div>
+                        <div class="form-group"><label for="employment_remark">Employment remark</label><input
+                            type="text" name="employment_remark" class="form-control" maxlength="1000"
+                            value="{{employee_record.employment_remark}}"
+                            placeholder="Employment remark" title="" id="employment_remark"></div>
+                    </div>
+                    <div class="mt-2 border border-dark rounded p-3">
+                        <div class="d-flex justify-content-between">
+                            <h5>
+                                Highest Education
+                            </h5>
+                            <!-- <button type="submit" style="height: fit-content;" class="btn btn-warning"> Save </button> -->
+                            <select class="form-control" name="education_status"
+                                id="id_education_status">
+                                <option value="submitted">Submitted</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="inprogress">In Progress</option>
+                                <option value="success">Success</option>
+                            </select>
+                        </div>
+                        <div id="education_container">
+
+                        </div>
+                        <div class="form-group"><label for="education_remark">Education remark</label><input
+                            type="text" name="education_remark" class="form-control" maxlength="1000"
+                            value="{{employee_record.education_remark}}"
+                            placeholder="Education remark" title="" id="education_remark"></div>
+                    </div>
+                    <div class="mt-2 border border-dark rounded p-3">
+                        <div class="d-flex justify-content-between">
+                            <h5>
+                                Address Proof
+                            </h5>
+                            <!-- <button type="submit" style="height: fit-content;" class="btn btn-warning"> Save </button> -->
+                        </div>
+                        <div class="d-flex mt-3 justify-content-around">
+                            <div>
+                                <label for="address_status">Address Check</label>
+                                <select class="form-control" name="address_status"
+                                    id="id_address_status">
+                                    <option value="submitted" selected="">Submitted</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="inprogress">In Progress</option>
+                                    <option value="success">Success</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="address_status">Passport Check</label>
+                                <select class="form-control" name="passport_status"
+                                    id="id_passport_status">
+                                    <option value="submitted" selected="">Submitted</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="inprogress">In Progress</option>
+                                    <option value="success">Success</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="address_status">Court Check</label>
+                                <select class="form-control" name="court_status"
+                                    id="id_court_status">
+                                    <option value="submitted" selected="">Submitted</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="inprogress">In Progress</option>
+                                    <option value="success">Success</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="aadhar">Aadhar Number</label>
+                            <input type="text" name="aadhar" class="form-control" disabled="true" maxlength="12"
+                                placeholder="Aadhar Number" title="" id="aadhar"
+                                value="{{employee_record.employee_store.aadhar}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="pan">Pan Number</label>
+                            <input type="text" name="pan" class="form-control" disabled="true" maxlength="10"
+                                placeholder="Pan Number" title="" id="pan"
+                                value="{{employee_record.employee_store.pan}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="passport">
+                                Passport Number
+                            </label>
+                            <input type="text" name="passport" class="form-control" disabled="true" maxlength="20"
+                                placeholder="Passport Number" title="" id="passport"
+                                value="{{employee_record.employee_store.passport}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Present Address From To</label>
+                            <textarea name="address" cols="40" rows="10" class="form-control" disabled="true"
+                                maxlength="250" placeholder="Present Address From To" title="" id="address"
+                                spellcheck="false">{{employee_record.employee_store.address}}</textarea>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label for="address_remark">
+                                    Address remark
+                                </label>
+                                <input
+                                    type="text" name="address_remark" class="form-control" maxlength="1000"
+                                    value="{{ employee_record.address_remark }}"
+                                    placeholder="Address remark" title="" id="address_remark">
+                            </div>
+                            <div class="form-group">
+                                <label for="passport_remark">
+                                    Passport remark
+                                </label>
+                                <input
+                                    type="text" name="passport_remark" class="form-control" maxlength="1000"
+                                    value="{{employee_record.passport_remark}}"
+                                    placeholder="Passport remark" title="" id="passport_remark">
+                            </div>
+                            <div class="form-group">
+                                <label for="court_remark">
+                                    Court remark
+                                </label>
+                                <input type="text"
+                                    name="court_remark" class="form-control" maxlength="1000" placeholder="Court remark"
+                                    value="{{employee_record.court_remark}}"
+                                    title="" id="court_remark">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 border border-dark rounded p-3">
+                        <div>
+                            <div class="d-flex justify-content-between">
+                                <h5>
+                                    Uploaded Documents
+                                </h5>
+                                <i class="pr text-primary" style="cursor: pointer;" onclick="downloadFiles()">
+                                    Download All
+                                </i>
+                            </div>
+                            <table class="mt-3 w-100" style="height: fit-content;">
+                                <tr>
+                                    <th>Files</th>
+                                    <th>Download Link</th>
+                                </tr>
+                                <tr>
+                                    <td>Form 16</td>
+                                    <td>
+                                        <a name="downloadDoc"
+                                            href="/media/{{employee_record.employee_store.form16_file}}">
+                                            {{employee_record.employee_store.form16_filename}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Aadhar Card</td>
+                                    <td>
+                                        <a name="downloadDoc"
+                                            href="/media/{{employee_record.employee_store.aadhar_file}}">
+                                            {{employee_record.employee_store.aadhar_filename}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Education Document</td>
+                                    <td>
+                                        <a name="downloadDoc"
+                                            href="/media/{{employee_record.employee_store.education_file}}">
+                                            {{employee_record.employee_store.education_filename}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Employment Document</td>
+                                    <td>
+                                        <a name="downloadDoc"
+                                            href="/media/{{employee_record.employee_store.employment_file}}">
+                                            {{employee_record.employee_store.employment_filename}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="mt-2 border border-dark rounded p-3">
+                        <div>
+                            <h5>
+                                Color Code
+                            </h5>
+                            <div class="form-group mt-3"><label for="overAll_status">Color Code<i class="requiredStar" style="color: red;">*</i></label>
+                                <select name="overAll_status" class="form-control" label="Color Code" title="" id="overAll_status">
+                                <option value="majorDis">
+                                    <div>
+                                        <div class="d-flex justify-content-center align-self-center">
+                                            Major Discrepancy
+                                        </div>
+                                    </div>
+                                </option>
+                                <option value="minorDis">
+                                    <div class="d-flex justify-content-center align-self-center">
+                                        Minor Discrepancy
+                                    </div>
+                                </option>
+                                <option value="inprogress" selected="">
+                                    <div>
+                                        <div></div>
+                                        In Progress
+                                    </div>
+                                </option>
+                                <option value="inaccessible">
+                                    <div class="d-flex justify-content-center align-self-center">
+                                        Inaccessible for verification/Unable to verify/Inputs Required
+                                    </div>
+                                </option>
+                                <option value="clear">
+                                    <div class="d-flex justify-content-center align-self-center">
+                                        Clear Report
+                                    </div>
+                                </option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 border border-dark rounded p-3">
+                        <div class="d-flex justify-content-between pb-3">
+                            <h5>
+                                Upload Image Proofs
+                            </h5>
+                        </div>
+                        {% bootstrap_form form %}
+                    </div>
+                </div>
+                <div class="d-flex justify-content-around my-5">
+                    <button class="btn btn-secondary" type="button"
+                        onclick="javascript:window.location.href='/'">Back</button>
+                    <button class="btn btn-info" type="submit">Save</button>
+                    <button class="btn btn-primary" type="button"
+                        onclick="javascript:window.location.href=`{% url 'CandidateReportPageView' pk %}`">Generate
+                        Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let education_status = "{{employee_record.education_status}}";
+        let employment_status = "{{employee_record.employment_status}}";
+        let passport_status = "{{employee_record.passport_status}}";
+        let address_status = "{{employee_record.address_status}}";
+        let court_status = "{{employee_record.court_status}}";
+        let overAll_status = "{{employee_record.overAll_status}}";
+
+        let employment_element = document.getElementById("id_employment_status");
+        let education_element = document.getElementById("id_education_status");
+        let passport_element = document.getElementById("id_passport_status");
+        let address_element = document.getElementById("id_address_status");
+        let court_element = document.getElementById("id_court_status");
+        let overAll_element = document.getElementById("id_overAll_status");
+        let overAll_element_view = document.getElementById("overAll_status");
+
+        employment_element.value = employment_status;
+        education_element.value = education_status;
+        passport_element.value = passport_status;
+        address_element.value = address_status;
+        court_element.value = court_status;
+        overAll_element.value = overAll_status;
+        overAll_element_view.value = overAll_status;
+
+
+        let education = "{{employee_record.employee_store.education}}".replaceAll("&#x27;", '"');
+        let education_obj = []
+        if (education) {
+            education_obj = JSON.parse(education)
+        }
+
+        let employment = "{{employee_record.employee_store.employment}}".replaceAll("&#x27;", '"');
+        let employment_obj = JSON.parse(employment)
+
+
+        if (employment_obj.length >= 1) {
+            employment_obj.forEach(element => {
+                let employment_container = document.getElementById("employment_container")
+                let addEmployerFields = `<div id='employer${employment_container.children.length}'><div class="row mt-3"> <div class="col"> <input required type="text" name="companyName" disabled value=${element.employerName} class="form-control" placeholder="Company Name"> </div> <div class="col"> <input required type="text" disabled value=${element.role} name="role" class="form-control" placeholder="Role"> </div> </div> <div class="row mt-3"> <div class="col"> <input required type="date" disabled value=${element.dateOfJoining} name="doj" class="form-control" placeholder="Date Of Joining"> </div> <div class="col"> <input required type="date" disabled value=${element.lastWorkingDay} name="lwd" class="form-control" placeholder="Last Working Date"> </div> </div> <div class="row mt-3"> <div class="col"> <input required type="tel" disabled value=${element.hrContact} name="HRContact" class="form-control" placeholder="HR Contact Number"> </div> <div class="col"> <input required type="email" disabled value=${element.hrEmail} name="HREmail" class="form-control" placeholder="HR Email ID"> </div> </div> </div> <hr/> `
+                employment_container.insertAdjacentHTML('beforeend', addEmployerFields)
+            });
+        }
+
+        if (education_obj.length >= 1) {
+            education_obj.forEach(element => {
+                let education_container = document.getElementById("education_container")
+                let addCompanyFields = `<div id='employer${education_container.children.length}'><div id="educate0"> <div class="row mt-3"> <div class="col"> <input required type="text" disabled value=${element.collegeName} name="collegeName" class="form-control" placeholder="College Name"> </div> <div class="col"> <input required type="text" disabled value=${element.degree} name="degree" class="form-control" placeholder="Degree"> </div> </div> <div class="row mt-3"> <div class="col"> <input required type="month" disabled value=${element.yearOfJoining} name="yoj" class="form-control" placeholder="Year of Joining"> </div> <div class="col"> <input required type="month" disabled value=${element.yearOfGraduation} name="yog" class="form-control" placeholder="Year of Graduation"> </div> </div> </div> <hr/> `
+                education_container.insertAdjacentHTML('beforeend', addCompanyFields)
+            });
+        }
+    });
+
+    function changeForm() {
+        document.getElementById("id_education_remark").value = document.getElementById("education_remark").value;
+        document.getElementById("id_employment_remark").value = document.getElementById("employment_remark").value;
+        document.getElementById("id_passport_remark").value = document.getElementById("passport_remark").value;
+        document.getElementById("id_address_remark").value = document.getElementById("address_remark").value;
+        document.getElementById("id_court_remark").value = document.getElementById("court_remark").value;
+        document.getElementById("id_overAll_status").value = document.getElementById("overAll_status").value;
+        document.getElementById("candidateForm").submit();
+    }
+
+    function downloadFiles() {
+        let atags = document.querySelectorAll("a[name=downloadDoc]")
+        atags.forEach(element => {
+            window.open(element.href)
+        });
+    }
+
+    function formSubmit() {
+        document.getElementById("id_education_remark").value = document.getElementById("education_remark").value;
+        document.getElementById("id_employment_remark").value = document.getElementById("employment_remark").value;
+        document.getElementById("id_passport_remark").value = document.getElementById("passport_remark").value;
+        document.getElementById("id_address_remark").value = document.getElementById("address_remark").value;
+        document.getElementById("id_court_remark").value = document.getElementById("court_remark").value;
+        document.getElementById("id_overAll_status").value = document.getElementById("overAll_status").value;
+        document.getElementById("candidateForm").submit();
+    }
+
+</script>
+
+{% endblock %}

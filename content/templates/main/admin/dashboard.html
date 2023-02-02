@@ -1,0 +1,172 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load i18n %}
+{% load myfunc %}
+
+{% block content %}
+
+{% block styles %}
+<style>
+    table {
+        text-align: center;
+    }
+
+    th,
+    tr,
+    td {
+        border: 1px solid rgba(0, 0, 0, .125);
+        padding: 0.5rem;
+    }
+
+    th {
+        font-size: larger;
+    }
+
+    .inprogress {
+        font-weight: bold;
+        color: #ffc107;
+    }
+
+    .submitted {
+        font-weight: bold;
+        color: #6c757d;
+    }
+
+    .rejected {
+        font-weight: bold;
+        color: #dc3545;
+    }
+
+    .success {
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .main_container {
+        width: 75%;
+        margin: auto;
+    }
+
+    .page-link{
+        font-size: 0.75rem;
+        padding: 0.5rem;
+    }
+
+    @media screen and (max-width: 800px) {
+        .main_container {
+            width: 100%
+        }
+    }
+</style>
+{% endblock %}
+
+{% if request.user.is_authenticated %}
+
+<div class="m-auto" style="display:flex; justify-content: center; margin: auto;">
+    <div class="w-100" style="align-self: center; ">
+        <div class="w-100" class="customForm">
+            <form class="w-100" id="employeeForm" method='post' enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3 class="card-header rounded">
+                    BGV Submission List
+                </h3>
+                {% if submittedEmployees %}
+                <div class="formpad">
+                    <table class="w-100 mt-3">
+                        <tr>
+                            <th>Candidate Name</th>
+                            <th>Status</th>
+                            <th>Submitted Date</th>
+                            <th>Updated Date</th>
+                            <th>Record</th>
+                        </tr>
+                        {% for employee in submittedEmployees %}
+                        <tr>
+                            <td>
+                                {{employee.employee_store.candidate.first_name|title}} {{employee.employee_store.candidate.last_name|title}}
+                            </td>
+                            <td style="color:{{employee.overAll_status|GetDisplayStyle}}; font-weight: 600;">
+                                {{employee.overAll_status|GetDisplayNameDashboard}}
+                            </td>
+                            <td class="{{employee.employee_store.created_date}}">
+                                {{employee.employee_store.created_date}}
+                            </td>
+                            <td class="{{employee.employee_store.updated_date}}">
+                                {{employee.employee_store.updated_date}}
+                            </td>
+                            <td>
+                                <a href="{% url 'AdminCandidatePageView' employee.employee_store.candidate.pk  %}" role="button"
+                                    aria-pressed="true">
+                                    Open Record
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% else %}
+                <div class="d-flex justify-content-center my-5">
+                    <h5>
+                        No Records Found
+                    </h5>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+        <!--Pagination-->
+        <nav class="mt-3" aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if submittedEmployees.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ submittedEmployees.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+                </li>
+                {% endif %}
+
+                {% if submittedEmployees.number|add:'-4' > 1 %}
+                <li class="page-item"><a class="page-link" href="?page={{ submittedEmployees.number|add:'-5' }}">&hellip;</a></li>
+                {% endif %}
+
+                {% for i in submittedEmployees.paginator.page_range %}
+                {% if submittedEmployees.number == i %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">
+                        {{ i }}
+                        <span class="sr-only">(current)</span>
+                    </span>
+                </li>
+                {% elif i > submittedEmployees.number|add:'-5' and i < submittedEmployees.number|add:'5' %} <li class="page-item"><a
+                        class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if submittedEmployees.paginator.num_pages > submittedEmployees.number|add:'4' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ submittedEmployees.number|add:'5' }}">&hellip;</a>
+                    </li>
+                    {% endif %}
+
+                    {% if submittedEmployees.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ submittedEmployees.next_page_number }}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </nav>
+        <!--end of Pagination-->
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

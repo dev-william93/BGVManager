@@ -1,0 +1,30 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load i18n %}
+
+{% block content %}
+
+    {% if request.user.is_authenticated %}
+
+    <div style="display:flex; justify-content: center; align-self: center;  position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -999;">
+        <div style="align-self: center; ">
+            <h2>
+                Your username is <b>{{ request.user.username }}</b>.
+            </h2>
+        </div> 
+    </div>
+
+
+    {% else %}
+
+    <div style="display:flex; justify-content: center; align-self: center;  position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -999;">
+        <div style="align-self: center; ">
+            <h2>
+                You are a guest.
+            </h2>
+        </div>
+    </div>
+
+    {% endif %}
+
+{% endblock %}
