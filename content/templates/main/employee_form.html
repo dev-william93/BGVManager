@@ -72,17 +72,19 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <input required type="date" name="doj" class="form-control"
+                                        <input required type="date" name="doj" id='doj' class="form-control"
                                             placeholder="Date Of Joining">
                                     </div>
                                     <div class="col">
-                                        <input required type="date" name="lwd" class="form-control"
+                                        <input required type="date" name="lwd" id='lwd' class="form-control"
                                             placeholder="Last Working Date">
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <input required type="tel" name="HRContact" class="form-control"
+                                        <input required type="tel" name="HRContact" class="form-control" id='hr_contact'
+                                        required on invalid "this.setCustomValidity('Please enter HR Phone')" on
+                                        input="this.setCustomValidity('')" pattern = "[0-9]{3}[0-9]{3}[0-9]{4}"
                                             placeholder="HR Contact Number">
                                     </div>
                                     <div class="col">
@@ -129,11 +131,11 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <input required type="month" name="yoj" class="form-control"
+                                        <input required type="month" name="yoj" class="form-control yoj" 
                                             placeholder="Year of Joining">
                                     </div>
                                     <div class="col">
-                                        <input required type="month" name="yog" class="form-control"
+                                        <input required type="month" name="yog" class="form-control jog" 
                                             placeholder="Year of Graduation">
                                     </div>
                                 </div>
@@ -150,17 +152,21 @@
                         <div class="form-group mt-3">
                             <label for="aadhar">Aadhar Number<i class="requiredStar" style="color: red;">*</i></label>
                             <input type="text" name="aadhar" class="form-control" required="true" maxlength="12"
+                            required on invalid "this.setCustomValidity('Please enter Adhar Card Number(111111111111)')" on
+                            input="this.setCustomValidity('')" pattern = "[0-9]{4}[0-9]{4}[0-9]{4}"
                                 placeholder="Aadhar Number" title="" id="aadhar">
                         </div>
                         <div class="form-group">
                             <label for="pan">Pan Number<i class="requiredStar" style="color: red;">*</i></label>
                             <input type="text" name="pan" class="form-control" required="true" maxlength="10"
+                            required on invalid "this.setCustomValidity('Please enter your Pan Card Numebr (AAAAA1111A)')" on
+                            input="this.setCustomValidity('')" pattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}"
                                 placeholder="Pan Number" title="" id="pan">
                         </div>
                         <div class="form-group">
                             <label for="passport">Passport Number<i class="requiredStar" style="color: red;">*</i></label>
                             <input type="text" name="passport" class="form-control" required="true" maxlength="20"
-                                placeholder="Passport Number" title="" id="passport">
+                                placeholder="Passport Number" title="" id="passport" pattern = "[A-Z]{5}[0-9]{4}[A-Z]{1}">
                         </div>
                         <div class="form-group">
                             <label for="address">Present Address From To<i class="requiredStar" style="color: red;">*</i></label>
@@ -274,6 +280,14 @@
         document.getElementById("id_passport").value = document.getElementById("passport").value;
         document.getElementById("id_address").value = document.getElementById("address").value;
     }
+
+    $(document).ready(function() {
+        $.validator.addMethod("#lwd .yog", function(value, element) {
+            var startDate = $('#doj .yoj').val();
+            return Date.parse(startDate) <= Date.parse(value) || value == "";
+        }, "* End date must be after start date");
+        $('#employeeForm').validate();
+    });
 </script>
 
 {% endblock %}
