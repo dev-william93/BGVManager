@@ -127,7 +127,7 @@ LANGUAGES = [
     ('es', _('Spanish')),
 ]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 USE_TZ = True
 
 STATIC_ROOT = os.path.join(CONTENT_DIR, 'static')
