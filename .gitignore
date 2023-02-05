@@ -131,3 +131,6 @@ dmypy.json
 #django Migration
 *.pyc
 */migrations
+
+#customized
+*/media/*

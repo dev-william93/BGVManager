@@ -149,6 +149,10 @@
         text-align: center;
     }
 
+    .extensiveReport{
+        display: none;
+    }
+
     @media print {
 
         html,
@@ -192,6 +196,10 @@
             /* Firefox 48 – 96 */
             print-color-adjust: exact !important;
             /* Firefox 97+, Safari 15.4+ */
+        }
+
+        .extensiveReport{
+            display: block !important;
         }
     }
 </style>
@@ -310,77 +318,79 @@
                     <tr>
                         <td>Present Address</td>
                         <td class="w-50">{{verification_record.employee_store.address}}</td>
-                        <td class="last2">25-08-2021 12:42 PM</td>
+                        <td class="last2">{{verification_record.updated_date}}</td>
                         <td class="statusData" style="color: {{verification_record.address_status|GetDisplayName}}">{{verification_record.address_status|GetDisplayName}}</td>
                     </tr>
                 </table>
             </div>
             <div class="pagebreak"></div>
-            <div style="margin-top: 5rem">
-                <h3 class="d-flex justify-content-center my-3">
-                    Summary Details
-                </h3>
-                <table class="dataTable text-left w-100">
-                    <tr class="font-weight-bold greyBg text-center">
-                        <td colspan="3">Education Verification: Education </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Particulars</td>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Application Details</td>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Reported Details</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the Institution</td>
-                        <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
-                        <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the Candidate</td>
-                        <td style="width: 33.3%;">{{verification_record.employee_store.candidate_fullname}}</td>
-                        <td style="width: 33.3%;">{{verification_record.employee_store.candidate_fullname}}</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Degree</td>
-                        <td style="width: 33.3%;">{{collegeName.degree}}</td>
-                        <td style="width: 33.3%;">{{collegeName.degree}}</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Month & Year of Passing </td>
-                        <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
-                        <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
-                        <td colspan="2">{{verification_record.education_remark}}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="pagebreak"></div>
-            <div class="d-flex justify-content-center" style="margin-top: 5rem;">
-                <img src="/media/{{verification_record.education_verified}}" alt="education" srcset="/media/{{verification_record.education_verified}}">
-            </div>
-            <div class="pagebreak"></div>
-            <div style="margin-top: 5rem">
-                <table class="dataTable text-left w-100">
-                    <tr class="font-weight-bold greyBg text-center">
-                        <td colspan="3">Database Verification</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Record Not Found</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 2.5%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
-                        <td>{{verification_record.address_remark}}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="pagebreak"></div>
-            <div class="d-flex justify-content-center" style="margin-top: 5rem;">
-                <img style="max-width: 90vw; max-height: 85vh;" src="/media/{{verification_record.address_verified}}" alt="address" srcset="/media/{{verification_record.address_verified}}">
-            </div>
-            <div class="pagebreak"></div>
-            <div class="d-flex justify-content-center" style="margin-top: 5rem;">
-                <img style="max-width: 90vw; max-height: 85vh;" src="/media/{{verification_record.passport_verified}}" alt="passport" srcset="/media/{{verification_record.passport_verified}}">
+            <div class="extensiveReport">
+                <div style="margin-top: 5rem">
+                    <h3 class="d-flex justify-content-center my-3">
+                        Summary Details
+                    </h3>
+                    <table class="dataTable text-left w-100">
+                        <tr class="font-weight-bold greyBg text-center">
+                            <td colspan="3">Education Verification: Education </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Particulars</td>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Application Details</td>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Reported Details</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the Institution</td>
+                            <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
+                            <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the Candidate</td>
+                            <td style="width: 33.3%;">{{verification_record.employee_store.candidate_fullname}}</td>
+                            <td style="width: 33.3%;">{{verification_record.employee_store.candidate_fullname}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Degree</td>
+                            <td style="width: 33.3%;">{{collegeName.degree}}</td>
+                            <td style="width: 33.3%;">{{collegeName.degree}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Month & Year of Passing </td>
+                            <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
+                            <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
+                            <td colspan="2">{{verification_record.education_remark}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="pagebreak"></div>
+                <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                    <img src="/media/{{verification_record.education_verified}}" alt="education" srcset="/media/{{verification_record.education_verified}}">
+                </div>
+                <div class="pagebreak"></div>
+                <div style="margin-top: 5rem">
+                    <table class="dataTable text-left w-100">
+                        <tr class="font-weight-bold greyBg text-center">
+                            <td colspan="3">Database Verification</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Record Not Found</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 2.5%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
+                            <td>{{verification_record.address_remark}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="pagebreak"></div>
+                <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                    <img style="max-width: 90vw; max-height: 85vh;" src="/media/{{verification_record.address_verified}}" alt="address" srcset="/media/{{verification_record.address_verified}}">
+                </div>
+                <div class="pagebreak"></div>
+                <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                    <img style="max-width: 90vw; max-height: 85vh;" src="/media/{{verification_record.passport_verified}}" alt="passport" srcset="/media/{{verification_record.passport_verified}}">
+                </div>
             </div>
         </div>
         <div class="buttons d-flex justify-content-around my-5">
