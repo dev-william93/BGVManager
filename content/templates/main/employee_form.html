@@ -289,13 +289,6 @@
         document.getElementById("id_address").value = document.getElementById("address").value;
     }
 
-    $(document).ready(function() {
-        $.validator.addMethod("#lwd .yog", function(value, element) {
-            var startDate = $('#doj .yoj').val();
-            return Date.parse(startDate) <= Date.parse(value) || value == "";
-        }, "* End date must be after start date");
-        $('#employeeForm').validate();
-    });
 </script>
 
 <script>
@@ -321,29 +314,4 @@
         dynamicDatapicker("employer0 .from", "employer0 .to")
     });
 </script>
-
-<script>
-    function dynamicDatapicker(fromId, toId){
-        $("#"+fromId).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        onClose: function( selectedDate ) {
-            $("#"+toId).datepicker( "option", "minDate", selectedDate );
-        }
-        });
-        $("#"+toId).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        onClose: function( selectedDate ) {
-            $("#"+fromId).datepicker( "option", "maxDate", selectedDate );
-        }
-        });
-    }
-    $(function() {
-        dynamicDatapicker("employer0 .from", "employer0 .to")
-    });
-</script>
-
 {% endblock %}
