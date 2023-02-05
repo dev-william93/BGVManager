@@ -5,15 +5,18 @@
 
 {% block content %}
 
-    <h4>{% trans 'Create an account' %}</h4>
-
+<div class="content-container">
+    <h4 class="my-3">{% trans 'Create an account' %}</h4>
+    
     <form method="post">
-
+    
         {% csrf_token %}
         {% bootstrap_form form %}
-
+    
         <button class="btn btn-success">{% trans 'Create' %}</button>
-
+    
     </form>
+</div>
+
 
 {% endblock %}

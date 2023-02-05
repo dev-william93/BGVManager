@@ -21,6 +21,11 @@
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" defer=""></script>
+
 {% block styles %}
 
 {% endblock %}
@@ -30,11 +35,26 @@
         .logoImage{
             width: 135px;
             height: 30px;
-        }    
+        }
+        .content-container{
+            width: 100% !important;
+            margin: auto !important;
+        }
     }
     .requiredStar{
         color: red;
         font-size: 1.5rem;
+    }
+    .content-container{
+        width: 50%;
+        margin: auto;
+    }
+    ul{
+        list-style: none
+    }
+    ul li{
+        font-size: 1rem;
+        font-weight: 400;
     }
 </style>
 
@@ -93,7 +113,6 @@
 </nav>
 
 <div class="container container-fluid mt-3">
-
     {% bootstrap_messages %}
 
     {% block content %}
@@ -107,6 +126,9 @@
 <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 
 <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 {% block script %}
 

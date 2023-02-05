@@ -4,8 +4,8 @@
 {% load i18n %}
 
 {% block content %}
-
-    <h4>{% trans 'Resend an activation code' %}</h4>
+<div class="content-container">
+    <h4 class="my-3">{% trans 'Resend an activation code' %}</h4>
 
     <form method="post">
 
@@ -23,5 +23,6 @@
             <a href="{% url 'accounts:log_in' %}">Log in</a>
         </li>
     </ul>
+</div>
 
 {% endblock %}

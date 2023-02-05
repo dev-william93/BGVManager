@@ -4,14 +4,17 @@
 
 {% block content %}
 
-    <h4>{% trans 'Logged out' %}</h4>
-
+<div class="content-container">
+    <h4 class="my-3">{% trans 'Logged out' %}</h4>
+    
     <p>
         {% trans 'Thanks for spending some quality time with the site today.' %}
     </p>
-
+    
     <p>
         <a href="{% url 'accounts:log_in' %}">{% trans 'Log in again' %}</a>
     </p>
+</div>
+
 
 {% endblock %}
