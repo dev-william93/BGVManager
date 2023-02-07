@@ -20,7 +20,7 @@ class IndexPageView(TemplateView):
         if request.user.is_authenticated:
             if request.user.is_superuser:
                 submittedEmployees = verification_store.objects.filter(~Q(overAll_status='success'))
-                paginator = Paginator(submittedEmployees, 3)
+                paginator = Paginator(submittedEmployees, 15)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
                 return render(request, 'main/admin/dashboard.html', {'submittedEmployees': page_obj})

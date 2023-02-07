@@ -120,8 +120,7 @@
     <div class="w-100" style="align-self: center; ">
         <div class="w-100" class="customForm">
             <h3 class="card-header rounded">
-                {{employee_record.candidate.first_name|title}} {{employee_record.candidate.last_name|title}}
-                BGV
+                {{employee_record.candidate.first_name|title}} {{employee_record.candidate.last_name|title}} - BGV
             </h3>
             <form class="w-100" id="candidateForm" method='post' enctype="multipart/form-data" onsubmit="formSubmit()">
                 {% csrf_token %}

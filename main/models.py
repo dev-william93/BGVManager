@@ -56,6 +56,10 @@ class employee_store(models.Model):
         name = self.candidate.first_name + " " + self.candidate.last_name
         return name
 
+    def save(self, *args, **kwargs):
+        self.updated_date = datetime.now()
+        super(self).save(*args, **kwargs)
+
 
 class verification_store(models.Model):
     def user_directory_path(instance, filename):
@@ -102,3 +106,7 @@ class verification_store(models.Model):
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        self.updated_date = datetime.now()
+        super(self).save(*args, **kwargs)

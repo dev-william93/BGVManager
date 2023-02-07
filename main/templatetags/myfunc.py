@@ -17,25 +17,29 @@ def GetDisplayName(CurrentStatus):
 
 @register.filter(name='GetDisplayStyle')
 def GetDisplayStyle(CurrentStatus):
-    if CurrentStatus == 'success':
+    if CurrentStatus == 'clear':
         return 'Green'
-    elif CurrentStatus == 'rejected':
+    elif CurrentStatus == 'majorDis':
         return 'Red'
     elif CurrentStatus == 'submitted':
         return 'Gray'
     elif CurrentStatus == 'inprogress':
         return 'Orange'
+    elif CurrentStatus == 'minorDis':
+        return 'Yellow'
     else:
         return 'Gray'
 
 @register.filter(name='GetDisplayNameDashboard')
 def GetDisplayNameDashboard(CurrentStatus):
-    if CurrentStatus == 'success':
+    if CurrentStatus == 'clear':
         return 'Success'
-    elif CurrentStatus == 'rejected':
+    elif CurrentStatus == 'majorDis':
         return 'Rejected'
-    elif CurrentStatus == 'submitted':
-        return 'Submitted'
+    elif CurrentStatus == 'inaccessible':
+        return 'In Accessible'
+    elif CurrentStatus == 'minorDis':
+        return 'Minor Dispenses'
     elif CurrentStatus == 'inprogress':
         return 'In Progress'
     else:
