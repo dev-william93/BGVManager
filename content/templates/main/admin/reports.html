@@ -55,14 +55,22 @@
 
     .ItemDetails,
     .greyBg {
-        background: #d0d0d0;
+        background: rgba(226, 237, 255, 1);
+        color: rgba(13, 52, 81, 1) !important;
         padding: 0.5rem 0rem;
-        border: 1px solid #313131;
+        border: 1px solid #0d3451;
     }
 
     .ItemDetails {
         background-color: #ececec;
         font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .ItemDetails div{
+        margin: 7px;
     }
 
     .candidateTable td:first-child {
@@ -123,9 +131,10 @@
     .logoImageContainer {
         display: flex;
         justify-content: center;
-        margin-bottom: 3rem;
+        margin-bottom: 5rem;
         padding-bottom: 0.75rem;
         border-bottom: 1px solid grey;
+        margin-top: 15px;
     }
 
     #divFooter,
@@ -209,22 +218,44 @@
 
 <div class="m-auto" style="display:flex; justify-content: center; margin: auto;">
     <div class="w-100" style="align-self: center; ">
-        <div class="logoImageContainer">
-            <img class="logoImage" src="{% static 'img/logo.png' %}" alt="logo"
-                srcset="{% static 'img/logo.png' %}">
+        <div>
+            <div class="logoImageContainer">
+                <img class="logoImage" src="{% static 'img/logo.png' %}" alt="logo"
+                    srcset="{% static 'img/logo.png' %}">
+            </div>
         </div>
         <div class="w-100" class="customForm">
             <div class="mainHeader card-header rounded text-center greyBg">
-                <b>F</b>INAL
-                <b>B</b>ACKGROUND
-                <b>R</b>EPORT
+                CANDIDATE'S
+                BACKGROUND
+                VERIFICATION
+                REPORT
             </div>
             <div class="d-flex justify-content-center my-3">
-                <table class="candidateTable text-left w-100">
+                <table class="candidateTable text-left" style="width: 75%;">
                     <tr>
                         <td class="w-25">Name of Candidate</td>
-                        <td colspan="4">{{verification_record.candidate.first_name}}
-                            {{verification_record.candidate.last_name}}</td>
+                        <td colspan="4">
+                            <!-- {{verification_record.candidate.first_name}}
+                            {{verification_record.candidate.last_name}} -->
+                            Mani
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25">Date of Birth</td>
+                        <td colspan="4">16-20-2022</td>
+                    </tr>
+                    <tr>
+                        <td class="w-25">Father's Name</td>
+                        <td colspan="4">Mani Father</td>
+                    </tr>
+                    <tr>
+                        <td class="w-25">Reference No </td>
+                        <td colspan="4">#4896415</td>
+                    </tr>
+                    <tr>
+                        <td class="w-25">Business User</td>
+                        <td colspan="4">Genex Corporate Service</td>
                     </tr>
                     <tr>
                         <td class="w-25">Date Initiated</td>
@@ -241,32 +272,64 @@
                         </td>
                     </tr>
                 </table>
-            </div>
-            <div class="d-flex w-100 justify-content-around background-grey ItemDetails">
-                <div class="d-flex justify-content-center align-self-center">
-                    <div class="styleRed"></div>
-                    Major Discrepancy
-                </div>
-                <div class="d-flex justify-content-center align-self-center">
-                    <div class="styleYellow"></div>
-                    Minor Discrepancy
-                </div>
-                <div class="d-flex justify-content-center align-self-center">
-                    <div class="styleOrange"></div>
-                    Inaccessible for verification/Unable to verify/Inputs Required
-                </div>
-                <div class="d-flex justify-content-center align-self-center">
-                    <div class="styleGreen"></div>
-                    Clear Report
+                <div class="ItemDetails p-3" style="width: 25%;" >
+                    <div class="d-flex">
+                        <div class="styleRed"></div>
+                        Found Discrepancy
+                    </div>
+                    <div class="d-flex">
+                        <div class="styleOrange"></div>
+                        In Progress
+                    </div>
+                    <div class="d-flex">
+                        <div class="styleGreen"></div>
+                        All Clear
+                    </div>
                 </div>
             </div>
-            <div>
-                <h3 class="d-flex justify-content-center my-3">
-                    Executive Summary
-                </h3>
+            <div class="mt-5">
                 <table class="dataTable text-left w-100">
                     <tr class="font-weight-bold greyBg">
-                        <td colspan="5">EDUCATION VERIFICATION</td>
+                        <td colspan="5">
+                            <h5 class="d-flex justify-content-center">
+                                Overall Summary
+                            </h5>
+                        </td>
+                    </tr>
+                    <tr class="font-weight-bold">
+                        <td>Type of Check</td>
+                        <!-- <td class="text-center">Brief Details</td> -->
+                        <td class="text-center last2">Verification Date</td>
+                        <td class="text-center">Status</td>
+                    </tr>
+                    <tr>
+                        <td>Education verification</td>
+                        <!-- <td>{{collegeName.collegeName}}</td> -->
+                        <td class="last2">{{verification_record.updated_date}}</td>
+                        <td class="statusData" style="color: {{verification_record.education_status|GetDisplayName}}">{{verification_record.education_status|GetDisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Present Address</td>
+                        <!-- <td class="w-50">{{verification_record.employee_store.address}}</td> -->
+                        <td class="last2">{{verification_record.updated_date}}</td>
+                        <td class="statusData" style="color: {{verification_record.address_status|GetDisplayName}}">{{verification_record.address_status|GetDisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Database check for India - Criminal and Civil</td>
+                        <td class="last2">{{verification_record.updated_date}}</td>
+                        <td class="statusData" style="color: {{verification_record.court_status|GetDisplayName}}" >{{verification_record.court_status|GetDisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Database check for Global - Criminal and Civil</td>
+                        <td class="last2">{{verification_record.updated_date}}</td>
+                        <td class="statusData" style="color: {{verification_record.passport_status|GetDisplayName}}" >{{verification_record.passport_status|GetDisplayName}}</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- <div class="d-flex justify-content-center my-3">
+                <table class="dataTable text-left w-100">
+                    <tr class="font-weight-bold greyBg">
+                        <td colspan="5">ONLINE COURT RECORD VERIFICATION</td>
                     </tr>
                     <tr class="font-weight-bold">
                         <td>Type of Check</td>
@@ -274,12 +337,7 @@
                         <td class="text-center last2">Verification Date</td>
                         <td class="text-center">Status</td>
                     </tr>
-                    <tr>
-                        <td>Education</td>
-                        <td>{{collegeName.collegeName}}</td>
-                        <td class="last2">{{verification_record.updated_date}}</td>
-                        <td class="statusData" style="color: {{verification_record.education_status|GetDisplayName}}">{{verification_record.education_status|GetDisplayName}}</td>
-                    </tr>
+
                 </table>
             </div>
             <div class="d-flex justify-content-center my-3">
@@ -292,37 +350,9 @@
                         <td class="text-center last2">Verification Date</td>
                         <td class="text-center">Status</td>
                     </tr>
-                    <tr>
-                        <td>India Specific Database Checks</td>
-                        <td class="last2">{{verification_record.updated_date}}</td>
-                        <td class="statusData" style="color: {{verification_record.court_status|GetDisplayName}}" >{{verification_record.court_status|GetDisplayName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Global Database Checks</td>
-                        <td class="last2">{{verification_record.updated_date}}</td>
-                        <td class="statusData" style="color: {{verification_record.passport_status|GetDisplayName}}" >{{verification_record.passport_status|GetDisplayName}}</td>
-                    </tr>
+
                 </table>
-            </div>
-            <div class="d-flex justify-content-center my-3">
-                <table class="dataTable text-left w-100">
-                    <tr class="font-weight-bold greyBg">
-                        <td colspan="5">ONLINE COURT RECORD VERIFICATION</td>
-                    </tr>
-                    <tr class="font-weight-bold">
-                        <td>Type of Check</td>
-                        <td class="text-center">Brief Details</td>
-                        <td class="text-center last2">Verification Date</td>
-                        <td class="text-center">Status</td>
-                    </tr>
-                    <tr>
-                        <td>Present Address</td>
-                        <td class="w-50">{{verification_record.employee_store.address}}</td>
-                        <td class="last2">{{verification_record.updated_date}}</td>
-                        <td class="statusData" style="color: {{verification_record.address_status|GetDisplayName}}">{{verification_record.address_status|GetDisplayName}}</td>
-                    </tr>
-                </table>
-            </div>
+            </div> -->
             <div class="pagebreak"></div>
             <div class="extensiveReport">
                 <div style="margin-top: 5rem">
@@ -404,6 +434,7 @@
                 <h6>Confidential</h6>
                 <div>Website: vorkinsta.com</div>
                 <div>Email: verfication@vorkinsta.com</div>
+                <div>Landline: +91-2231402672</div>
             </div>
         </div>
     </div>
