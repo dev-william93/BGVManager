@@ -9,9 +9,11 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 import datetime
 
-
+@method_decorator(login_required, name='dispatch')
 class IndexPageView(TemplateView):
     model = verification_store
     template_name = 'main/employee_form.html'
@@ -55,7 +57,7 @@ class IndexPageView(TemplateView):
                 print(form.errors)
                 return HttpResponseRedirect(reverse('index'))
 
-
+@method_decorator(login_required, name='dispatch')
 class AdminCandidatePageView(TemplateView):
     model = verification_store
     template_name = 'main/each_candidate.html'
@@ -109,7 +111,6 @@ class AdminCandidatePageView(TemplateView):
             
             verification_record.update(**dict_request)
             return HttpResponseRedirect(reverse('AdminCandidatePageView', args=[pk]))
-
 
 class CandidateReportPageView(TemplateView):
     model = verification_store

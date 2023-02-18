@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.core.validators import FileExtensionValidator
 
 
 class employee_store(models.Model):
@@ -22,11 +23,11 @@ class employee_store(models.Model):
     education = models.JSONField(default=list, null=True, blank=True)
     employment = models.JSONField(default=list, null=True, blank=True)
 
-    form16_file = models.FileField(upload_to=user_directory_path)
-    aadhar_file = models.FileField(upload_to=user_directory_path)
-    education_file = models.FileField(upload_to=user_directory_path)
-    employment_file = models.FileField(upload_to=user_directory_path)
-    passport_file = models.FileField(upload_to=user_directory_path)
+    form16_file = models.FileField(upload_to=user_directory_path, validators=[FileExtensionValidator(['pdf', 'doc', 'docx'])])
+    aadhar_file = models.FileField(upload_to=user_directory_path, validators=[FileExtensionValidator(['pdf', 'doc', 'docx'])])
+    education_file = models.FileField(upload_to=user_directory_path, validators=[FileExtensionValidator(['pdf', 'doc', 'docx'])])
+    employment_file = models.FileField(upload_to=user_directory_path, validators=[FileExtensionValidator(['pdf', 'doc', 'docx'])])
+    passport_file = models.FileField(upload_to=user_directory_path, validators=[FileExtensionValidator(['pdf', 'doc', 'docx'])])
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -90,11 +91,11 @@ class verification_store(models.Model):
     address_status = models.CharField(choices=document_status_choice, default='submitted', max_length=10)
     court_status = models.CharField(choices=document_status_choice, default='submitted', max_length=10)
 
-    education_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True)
-    employment_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True)
-    ecourt_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True)
-    address_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True)
-    passport_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True)
+    education_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True, validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])
+    employment_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True, validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])
+    ecourt_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True, validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])
+    address_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True, validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])
+    passport_verified = models.FileField(upload_to=user_directory_path, null=True, blank=True, validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])
 
     education_remark = models.CharField(max_length=1000, null=True, blank=True, default='')
     employment_remark = models.CharField(max_length=1000, null=True, blank=True, default='')
