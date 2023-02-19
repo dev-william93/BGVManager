@@ -860,3 +860,3581 @@ collegeName.forEach((element, idx) => {
 </script>
 
 {% endblock %}
+
+
+
+{% extends 'layouts/default/page.html' %}
+{% load static %}
+
+{% load i18n %}
+
+{% load myfunc %}
+
+{% block content %}
+
+{% block styles %}
+<style>
+    table {
+        text-align: center;
+    }
+
+    th,
+    tr,
+    td {
+        border: 1px solid rgba(0, 0, 0, .125);
+        padding: 0.5rem;
+    }
+
+    th {
+        font-size: larger;
+    }
+
+    .inprogress {
+        font-weight: bold;
+        color: #ffc107;
+    }
+
+    .submitted {
+        font-weight: bold;
+        color: #6c757d;
+    }
+
+    .rejected {
+        font-weight: bold;
+        color: #dc3545;
+    }
+
+    .success {
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .main_container {
+        width: 75%;
+        margin: auto;
+    }
+
+    select {
+        width: fit-content !important;
+    }
+
+    .ItemDetails,
+    .greyBg {
+        background: rgba(226, 237, 255, 1);
+        color: rgba(13, 52, 81, 1) !important;
+        padding: 0.5rem 0rem;
+        border: 1px solid #0d3451;
+    }
+
+    .ItemDetails {
+        background-color: #ececec;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-left: none;
+    }
+
+    .ItemDetails div {
+        margin: 7px;
+    }
+
+    .candidateTable td:first-child {
+        background: #ececec
+    }
+
+    .candidateTable td:nth-child(2n+3) {
+        background: #ececec
+    }
+
+    .candidateTable td {
+        border: 1px solid #313131;
+    }
+
+    .styleRed {
+        background-color: #ff0000;
+    }
+
+    .styleYellow {
+        background-color: #ffe509;
+    }
+
+    .styleOrange {
+        background-color: #ffa500;
+    }
+
+    .styleGreen {
+        background-color: #008000;
+    }
+
+    .styleRed,
+    .styleYellow,
+    .styleOrange,
+    .styleGreen {
+        width: 15px;
+        height: 15px;
+        align-self: center;
+        margin-right: 10px;
+    }
+
+
+    .dataTable td:last-child {
+        width: 10%;
+    }
+
+    td {
+        border: 1px solid #313131;
+    }
+
+    .last2 {
+        width: 20%;
+    }
+
+    .mainHeader {
+        font-size: 1.75rem;
+    }
+
+    .logoImageContainer {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid grey;
+        margin-top: 15px;
+    }
+
+    #divFooter,
+    .logoImageContainer {
+        display: none !important;
+    }
+
+    .footerContainer {
+        border-top: 1px solid gray;
+        padding-top: 1rem;
+    }
+
+    @media screen and (max-width: 800px) {
+        .main_container {
+            width: 100%
+        }
+    }
+
+    .statusData {
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .tableHeaderBlue {
+        width: 487pt;
+        border: 1pt solid #1C1A1A;
+        font-weight: bold;
+    }
+
+    .extensiveReport {
+        display: none;
+    }
+
+    tr td:first-child {
+        width: 80%;
+    }
+
+    .columnA {
+        border: 1pt solid #1C1A1A;
+    }
+
+    .columnB {
+        width: 87pt;
+        border: 1pt solid #1C1A1A;
+    }
+
+    .headerAnnuxer {
+        text-indent: 0pt;
+        text-align: center;
+        /* margin: 2rem 0rem; */
+    }
+
+    .tableContainer {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .tableContainer table {
+        width: 80%;
+    }
+
+    .s15 {
+        margin: auto !important;
+        font-weight: bold;
+    }
+
+    .s16,
+    .s17 {
+        margin: auto !important;
+        text-align: left;
+    }
+
+    table {
+        margin-bottom: 2rem;
+    }
+
+    td {
+        margin: 0;
+        padding: 0 0.5rem;
+    }
+
+    @page{
+        size: auto; 
+    }
+
+    @media print {
+
+        * {
+            -webkit-print-color-adjust: exact !important;
+            /* Chrome, Safari 6 – 15.3, Edge */
+            color-adjust: exact !important;
+            /* Firefox 48 – 96 */
+            print-color-adjust: exact !important;
+            /* Firefox 97+, Safari 15.4+ */
+        }
+
+        html,
+        body {
+            height: 99% !important;
+        }
+
+        .buttons {
+            display: none !important;
+        }
+
+        .mainHeader {
+            margin-top: 5rem;
+        }
+
+        #divFooter {
+            display: flex !important;
+            width: 100% !important;
+            position: fixed !important;
+            bottom: 0 !important;
+            margin-left: -3rem;
+        }
+
+        .pagebreak {
+            clear: both;
+            page-break-after: always;
+        }
+
+        .pagebreak+div {
+            margin-top: 7rem;
+        }
+
+        .logoImageContainer {
+            display: flex !important;
+            width: 100% !important;
+            position: fixed !important;
+            top: 0 !important;
+            margin-left: -3rem;
+        }
+
+        table {
+            page-break-inside: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        .extensiveReport {
+            display: block !important;
+        }
+
+
+        .pageContent {
+            page-break-before: auto;
+        }
+
+        .footer-repeat {
+            display: table-footer-group;
+        }
+    }
+</style>
+{% endblock %}
+
+{% if request.user.is_authenticated %}
+
+<div>
+    <div class="logoImageContainer">
+        <img class="logoImage" src="{% static 'img/logo.png' %}" alt="logo" srcset="{% static 'img/logo.png' %}">
+    </div>
+</div>
+<div class="pageContent">
+    <div class="m-auto" style="display:flex; justify-content: center; margin: auto;">
+        <div class="w-100" style="align-self: center; ">
+            <div class="w-100" class="customForm">
+                <div class="mainHeader card-header rounded text-center greyBg">
+                    CANDIDATE'S
+                    BACKGROUND
+                    VERIFICATION
+                    REPORT
+                </div>
+                <div class="d-flex justify-content-center my-3">
+                    <table class="candidateTable text-left mb-0" style="width: 75%;">
+                        <tr>
+                            <td class="w-25">Name of Candidate</td>
+                            <td colspan="4">
+                                <!-- {{verification_record.candidate.first_name}}
+                                {{verification_record.candidate.last_name}} -->
+                                Mani
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Date of Birth</td>
+                            <td colspan="4">16-20-2022</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Father's Name</td>
+                            <td colspan="4">Mani Father</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Reference No </td>
+                            <td colspan="4">#4896415</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Business User</td>
+                            <td colspan="4">Genex Corporate Service</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Date Initiated</td>
+                            <td>{{verification_record.employee_store.created_date}}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Date of Report</td>
+                            <td>{{dateTime}}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Color Code</td>
+                            <td colspan="4"
+                                style="font-weight: 500; color: {{verification_record.get_overAll_status_display}};">
+                                {{verification_record.get_overAll_status_display}}
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="ItemDetails p-3" style="width: 25%;">
+                        <div class="d-flex">
+                            <div class="styleRed"></div>
+                            Found Discrepancy
+                        </div>
+                        <div class="d-flex">
+                            <div class="styleOrange"></div>
+                            In Progress
+                        </div>
+                        <div class="d-flex">
+                            <div class="styleGreen"></div>
+                            All Clear
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <table class="dataTable text-left w-100">
+                        <tr class="font-weight-bold greyBg">
+                            <td colspan="5">
+                                <h5 class="d-flex justify-content-center">
+                                    Overall Summary
+                                </h5>
+                            </td>
+                        </tr>
+                        <tr class="font-weight-bold">
+                            <td>Type of Check</td>
+                            <!-- <td class="text-center">Brief Details</td> -->
+                            <td class="text-center last2">Verification Date</td>
+                            <td class="text-center">Status</td>
+                        </tr>
+                        <tr>
+                            <td>Education verification</td>
+                            <!-- <td>{{collegeName.collegeName}}</td> -->
+                            <td class="last2">{{verification_record.updated_date}}</td>
+                            <td class="statusData" style="color: {{verification_record.education_status|GetDisplayName}}">
+                                {{verification_record.education_status|GetDisplayName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Present Address</td>
+                            <!-- <td class="w-50">{{verification_record.employee_store.address}}</td> -->
+                            <td class="last2">{{verification_record.updated_date}}</td>
+                            <td class="statusData" style="color: {{verification_record.address_status|GetDisplayName}}">
+                                {{verification_record.address_status|GetDisplayName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Database check for India - Criminal and Civil</td>
+                            <td class="last2">{{verification_record.updated_date}}</td>
+                            <td class="statusData" style="color: {{verification_record.court_status|GetDisplayName}}">
+                                {{verification_record.court_status|GetDisplayName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Database check for Global - Criminal and Civil</td>
+                            <td class="last2">{{verification_record.updated_date}}</td>
+                            <td class="statusData" style="color: {{verification_record.passport_status|GetDisplayName}}">
+                                {{verification_record.passport_status|GetDisplayName}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- <div class="d-flex justify-content-center my-3">
+                    <table class="dataTable text-left w-100">
+                        <tr class="font-weight-bold greyBg">
+                            <td colspan="5">ONLINE COURT RECORD VERIFICATION</td>
+                        </tr>
+                        <tr class="font-weight-bold">
+                            <td>Type of Check</td>
+                            <td class="text-center">Brief Details</td>
+                            <td class="text-center last2">Verification Date</td>
+                            <td class="text-center">Status</td>
+                        </tr>
+    
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center my-3">
+                    <table class="dataTable text-left w-100">
+                        <tr class="font-weight-bold greyBg">
+                            <td colspan="5">DATABASE VERIFICATION</td>
+                        </tr>
+                        <tr class="font-weight-bold">
+                            <td>Type of Check</td>
+                            <td class="text-center last2">Verification Date</td>
+                            <td class="text-center">Status</td>
+                        </tr>
+    
+                    </table>
+                </div> -->
+                <div class="pagebreak"></div>
+                <div class="extensiveReport">
+                    <div>
+                        <h3 class="d-flex justify-content-center my-3">
+                            Summary Details
+                        </h3>
+                        <table class="dataTable text-left w-100">
+                            <tr class="font-weight-bold greyBg text-center">
+                                <td colspan="3">Education Verification: Education </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Particulars</td>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Application
+                                    Details
+                                </td>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Verified Details
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the
+                                    Institution</td>
+                                <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
+                                <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the
+                                    Candidate</td>
+                                <td style="width: 33.3%;">{{verification_record.employee_store.candidate_fullname}}</td>
+                                <td style="width: 33.3%;">{{verification_record.employee_store.candidate_fullname}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Degree</td>
+                                <td style="width: 33.3%;">{{collegeName.degree}}</td>
+                                <td style="width: 33.3%;">{{collegeName.degree}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Month & Year of
+                                    Passing </td>
+                                <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
+                                <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
+                                <td colspan="2">{{verification_record.education_remark}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                        <img src="/media/{{verification_record.education_verified}}" alt="education"
+                            srcset="/media/{{verification_record.education_verified}}">
+                    </div>
+                    <div class="pagebreak"></div>
+                    <div>
+                        <table class="dataTable text-left w-100">
+                            <tr class="font-weight-bold greyBg text-center">
+                                <td colspan="3">Database Verification</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Record Not Found</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 2.5%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
+                                <td>{{verification_record.address_remark}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="pagebreak"></div>
+                    <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                        <img style="max-width: 90vw; max-height: 85vh;"
+                            src="/media/{{verification_record.address_verified}}" alt="address"
+                            srcset="/media/{{verification_record.address_verified}}">
+                    </div>
+                    <div class="pagebreak"></div>
+                    <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                        <img style="max-width: 90vw; max-height: 85vh;"
+                            src="/media/{{verification_record.passport_verified}}" alt="passport"
+                            srcset="/media/{{verification_record.passport_verified}}">
+                    </div>
+                    <div class="pagebreak"></div>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:19pt">
+                                <td class="tableHeaderBlue" colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15" style="text-align: center;">
+                                        Criminal Records Database Checks - India</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Central Bureau of Investigation Most Wanted List</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Supreme Court of India</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        High
+                                        Court Records</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of Defense</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Investigation Agency</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Crime Records Bureau</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Delhi Police</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        India Courts</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of Home Affairs of India</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        India Narcotics Control Bureau</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        India Wildlife Crime Control Bureau</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:19pt">
+                                <td class="tableHeaderBlue" colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15" style="text-align: center;">
+                                        Civil Litigation Database Checks – India</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Indian Politically Exposed Persons (PEP) Database</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Income Tax Department</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:19pt">
+                                <td class="tableHeaderBlue" colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15" style="text-align: center;">
+                                        Serious and Organized Crimes Database Checks – Global</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Interpol Most Wanted</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:16pt">
+                                <td class="tableHeaderBlue" colspan="2">
+                                    <p class="s17"
+                                        style="padding-top: 1pt;padding-left: 4pt;text-indent: 0pt;text-align: left;">US
+                                        &amp;
+                                        Canada – Most Wanted Lists</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bureau of Alcohol, Tobacco and Firearms, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Drug
+                                        Enforcement Administration, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:31pt">
+                                <td class="columnA">
+                                    <p class="s16"
+                                        style="padding-top: 3pt;padding-left: 4pt;padding-right: 2pt;text-indent: 0pt;text-align: left;">
+                                        Federal Bureau of Investigation, USA [includes hijack suspects, most wanted
+                                        &amp;
+                                        FBI
+                                        seeking
+                                        information]</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16"
+                                        style="padding-top: 4pt;padding-right: 19pt;text-indent: 0pt;text-align: right;">
+                                        No
+                                        record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Most
+                                        Wanted Fugitives: Texas Department of Public Safety, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Immigration and Customs Enforcement, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Secret Service, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        United States Department of Justice (DOJ), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        United States Marshals Service, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Postal Inspection Service, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of Defense, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of State-Enforcement, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <h2 class="headerAnnuxer">Annexure G</h2>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Dept
+                                        of State Foreign Terrorist Organizations, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Dept
+                                        of State Terrorist Exclusion List, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Investigative Service Georgia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of State, Narcotics Rewards Program, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        US
+                                        Bureau of International Narcotics and Law Enforcement</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Special Enforcement Units, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Royal Canadian Mounted Police, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ontario Provincial Service, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Peel Regional Police, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Alberta Law Enforcement Response Teams, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Border Services Agency, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Combined Forces Special Enforcement Unit-British Columbia(CFSEU-BC), Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Edmonton Police Service, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        London Canada Police Service, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Niagara Regional Police Service, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        OSFI
+                                        Enforcements, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        OSFI
+                                        Anti-Terrorism, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ottawa Police Service, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Permanent Anti-Corruption Unit, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Toronto Police Service, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        York
+                                        Regional Police, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:16pt">
+                                <td class="tableHeaderBlue" colspan="2">
+                                    <p class="s17"
+                                        style="padding-top: 1pt;padding-left: 4pt;text-indent: 0pt;text-align: left;">
+                                        Most
+                                        Wanted
+                                        Lists: Europe and Central Asia</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Police of Saxony-Anhalt (Sachsen-Anhalt) County, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        German Federal Criminal Police Office, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bayern Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Brandenburg Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bremen Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Hamburg Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Mecklenburg-Vorpommern Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Niedersachsen Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Saarland Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Sachsen Police, Germany</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Netherlands Police Department, The Netherlands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Terrorism List, The Netherlands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Netherlands Police</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Public Prosecution Service, The Netherlands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Proscribed Organizations, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Metropolitan Police Service, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Serious Fraud Office, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Crime Squad, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Crime stoppers Trust, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Crown Prosecution Service, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        London Police, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Scottish Crime and Drug Enforcement Agency, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <h2 class="headerAnnuxer">Annexure H</h2>
+    
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Serious Organized Crime Agency, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        UK
+                                        Border Agency, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of the Interior, Russia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Chief Military Prosecutor, Russia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Federal Penitentiary Service, Russia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Federal Security Service of the Russian Federation (FSB) - Terrorist List,
+                                        Russia
+                                    </p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:16pt">
+                                <td class="tableHeaderBlue" colspan="2">
+                                    <p class="s17"
+                                        style="padding-top: 1pt;padding-left: 4pt;text-indent: 0pt;text-align: left;">
+                                        Most
+                                        Wanted
+                                        Lists: Africa</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        South African Police Service, South Africa</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Prosecution Authority, South Africa</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:16pt">
+                                <td class="tableHeaderBlue" colspan="2">
+                                    <p class="s17"
+                                        style="padding-top: 1pt;padding-left: 4pt;text-indent: 0pt;text-align: left;">
+                                        Most
+                                        Wanted
+                                        Lists: Asia Pacific</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Australian National Security, Australia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Australian Crime Commission, Australia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Australian Customs and Border Protection Service, Australia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        China Ministry of Public Security</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Central Commission for Discipline Inspection-Top 100 Fugitives, China</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Hong
+                                        Kong Police Force, Hong Kong</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Police, Indonesia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Hokkaido Prefecture Police, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Public Security Intelligence Agency, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Fukuoka Prefecture Police, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Japanese National Police Agency, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Yamagata Prefecture Police, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Royal Malaysian Police Force, Malaysia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        Zealand Police, New Zealand</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Federal Investigation Agency (FIA) - Govt. of Pakistan, Pakistan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Punjab Police, Pakistan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Bureau of Investigation, Philippines</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Philippine Drug Enforcement Agency, Philippines</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Philippine National Police, Philippines</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Central Narcotics Bureau, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Police Force Case Studies, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Corrupt Practices Investigation Bureau, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Criminal Investigation Bureau, Taiwan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bureau of Investigation, Taiwan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of National Defense of Taiwan, Taiwan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bureau of Investigation, Ministry of Justice, Taiwan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:22pt">
+                                <td class="tableHeaderBlue" colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15"
+                                        style="padding-top: 4pt;padding-left: 92pt;padding-right: 90pt;text-indent: 0pt;text-align: center;">
+                                        Global Regulatory Bodies</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bureau of Industry and Security</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        World Bank Debarred Parties</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Defense Trade Controls (DTC) Debarred Parties</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:16pt">
+                                <td class="tableHeaderBlue" colspan="2">
+                                    <p class="s17"
+                                        style="padding-top: 1pt;padding-left: 4pt;text-indent: 0pt;text-align: left;">US
+                                        and
+                                        Canadian Regulatory Bodies</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <h2 class="headerAnnuxer">Annexure I</h2>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        York Stock Exchange (NYSE), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Commodities and Futures Trading Commission (CFTC), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Excluded Parties List System [includes General Services Administration (GSA)],
+                                        USA
+                                    </p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Federal Deposit and Insurance Corporation (FDIC), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Federal Reserve Board (FRB), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Crimes Enforcement Network, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        HHS-Office of Inspector General (OIG), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of Health &amp; Human Services, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        National Credit Union Association (NCUA), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Consumer Financial Protection Bureau, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Office Comptroller of Currency (OCC), USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        US
+                                        Securities and Exchange Commission, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        York State Insurance Department, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        US
+                                        State Attorneys General</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        US
+                                        Office of Thrift Supervision</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        York Department of Financial Services, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Industry Regulatory Authority, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Alabama Securities Commission, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Alaska Division of Banking, Securities and Corporations, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Arizona Corporation Commission Securities Division, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Arkansas Securities Department, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        BIS
+                                        Department of Commerce, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        California Department of Insurance, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Colorado Division of Securities, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of State Directorate of Defense Trade Controls, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Fraud Enforcement Task Force/ StopFraud.gov, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Florida Department of Financial Services, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Illinois Securities Department, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Kansas Securities Commission, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Maine Securities Division, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Massachusetts Securities Division, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Michigan Department of Insurance and Financial Services, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Missouri Secretary of State Securities Division, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Nebraska Department of Banking and Finance, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Nevada Secretary of State Securities Division, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        Jersey Bureau of Securities, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        Jersey Department of Banking &amp; Insurance, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ohio
+                                        Department of Commerce Securities Division, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Oklahoma Securities Commission, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Pennsylvania Banking and Securities Commission, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Pennsylvania Department General Services, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Tennessee Securities Division, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Texas State Securities Board, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        U.S
+                                        Courts, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="pagebreak"></div>
+                    <h2 class="headerAnnuxer">Annexure J</h2>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of Justice, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of Labor Office of Inspector General, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Federal Trade Commission, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bureau of Industry and Security (BIS)–export violations, USA</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        US
+                                        Food &amp; Drug Administration</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Alberta Securities Commission, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        British Columbia Securities Commission (BCSC), Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Investment Dealers Association of Canada (IDA), Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Office of Superintendents of Financial Institutions (OSFI), Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ontario Securities Commission (OSC), Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Canada Revenue Agency, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Cayman Islands Monetary Authority, Cayman Islands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Central Bank of Bahamas, Bahamas</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Federal Court of Canada, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Services Commission of Ontario, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Canadian Securities Administrators, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        Brunswick Securities Commission, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Nova
+                                        Scotia Securities Commission, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Tax
+                                        Court of Canada, Canada</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:16pt">
+                                <td class="tableHeaderBlue" colspan="2">
+                                    <p class="s17"
+                                        style="padding-top: 1pt;padding-left: 4pt;text-indent: 0pt;text-align: left;">
+                                        European
+                                        Regulatory Bodies</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Services Authority (FSA), United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Lloyds of London (Lloyds), United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        HM
+                                        Revenue and Customs, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Services Authority - Final Notice, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Judiciary of Scotland, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Conduct Authority, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Her
+                                        Majesty&#39;s Courts Service, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Home
+                                        Office, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Prudential Regulation Authority - Prohibited Individuals, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Companies House - Disqualified directors, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Serious Fraud Office, UK</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of Trade and Industry, United Kingdom</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Malta Financial Services Authority, Malta</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Netherlands Courts, Netherlands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Netherlands Financial Intelligence Unit, Netherlands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Supreme Court of the Netherlands, Netherlands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Netherlands Authority for the Financial Markets, Netherlands</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Office of the Director of Corporate Enforcement (ODCE), Ireland</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Revenue Commissioners - Irish Tax &amp; Customs, Ireland</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Irish Financial Services Regulatory Authority, Ireland</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Financial Supervision Commission, Isle of Man</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Institute for Supervision of Insurance, Italy</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Italian Securities Commission (Consob), Italy</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Jersey Financial Securities Commission, Jersey</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="pagebreak"></div>
+                    <h2 class="headerAnnuxer">Annexure K</h2>
+                    <div class="tableContainer">
+                        <table style="border-collapse:collapse;" cellspacing="0">
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Courts, Jersey</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Gibraltar Financial Services Commission, Gibraltar</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:15pt">
+                                <td class="tableHeaderBlue" colspan="2">
+                                    <p class="s17"
+                                        style="padding-top: 1pt;padding-left: 4pt;text-indent: 0pt;text-align: left;">
+                                        Asia
+                                        Pacific Regulatory Bodies</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Australian Stock Exchange, Australia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Australian Securities and Investment Commission (ASIC), Australia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Australian Securities Exchange</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Department of Foreign Affairs and Trade, Australia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bangladesh Securities and Commission, Bangladesh</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Insurance Regulatory Commission, China</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Securities Association of China, China</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Supreme People&#39;s Court, China</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        CSRC
+                                        (China Securities Regulatory Commission), China</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Hong
+                                        Kong Securities &amp; Futures Commission (HKSFC), Hong Kong</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Hong
+                                        Kong Monetary Authority – Warnings, Hong Kong</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Independent Commission against Corruption, Hong Kong</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Securities and Futures Exchanges, Hong Kong</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Indonesian Financial Services Authority</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of Economy, Trade and Industry, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of Finance, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Japanese Financial Services Agency, Japan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Supervisory Service, Korea Republic</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Malaysia Securities Commission (MSC), Malaysia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        The
+                                        Companies Commission of Malaysia, Malaysia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Bursa Malaysia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Courts of Malaysia (Judgments list), Malaysia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Anti-Corruption Commission, Malaysia</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        Zealand Securities Commission (NZSC), New Zealand</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        New
+                                        Zealand Serious Fraud Office, New Zealand</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Reserve Bank, New Zealand</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Securities Exchange Commission of Pakistan (SECP), Pakistan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Philippines Securities and Exchange Commission, Philippines</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Singapore Stock Exchange, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Supreme Court, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of Law, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Customs, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Inland Revenue Authority, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Ministry of Manpower, Singapore</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Thailand Securities and Exchange Commission, Thailand</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Anti-Money Laundering Office, Thailand</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Banking Bureau of Financial Supervisory Commission, Taiwan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Financial Supervisory Commission, Taiwan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td class="columnA">
+                                    <p class="s16">
+                                        Taiwan Supreme Prosecutors Office, Taiwan</p>
+                                </td>
+                                <td class="columnB">
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <h2 class="headerAnnuxer">Annexure L</h2>
+                    <div class="pagebreak"></div>
+                    <div class="tableContainer">
+                        <table cellspacing="0">
+                            <tr style="height:22pt">
+                                <td style="width:482pt;border-top-style:solid;border-top-width:1pt;border-top-color:#1C1A1A;border-left-style:solid;border-left-width:1pt;border-left-color:#1C1A1A;border-bottom-style:solid;border-bottom-width:1pt;border-bottom-color:#1C1A1A;border-right-style:solid;border-right-width:1pt;border-right-color:#1C1A1A"
+                                    colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15"
+                                        style="padding-top: 4pt;padding-left: 118pt;padding-right: 115pt;text-indent: 0pt;text-align: center;">
+                                        Compliance Database</p>
+                                </td>
+                            </tr>
+                            <tr style="height:31pt">
+                                <td>
+                                    <p class="s16">Office
+                                        of
+                                        Foreign Assets Control (OFAC): Specially Designated Nationals &amp;
+                                        BlockedPersons
+                                        and
+                                        names that
+                                        have been deleted from the OFAC list</p>
+                                </td>
+                                <td>
+                                    <p class="s16">No
+                                        record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Monetary Authority of Singapore</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Hong
+                                        Kong Monetary Authority</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Australian Department of Foreign Affairs and Trade (DFAT)</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        The
+                                        Australian Transaction Reports and Analysis Centre, Australia</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        OSFI
+                                        Consolidated List, Canada</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        United Nations International Criminal Tribunal for the Former Yugoslavia</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        International Criminal Tribunal for Rwanda</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Global Money Laundering Database</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Politically Exposed Persons Database</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:22pt">
+                                <td style="width:482pt;border-top-style:solid;border-top-width:1pt;border-top-color:#1C1A1A;border-left-style:solid;border-left-width:1pt;border-left-color:#1C1A1A;border-bottom-style:solid;border-bottom-width:1pt;border-bottom-color:#1C1A1A;border-right-style:solid;border-right-width:1pt;border-right-color:#1C1A1A"
+                                    colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15"
+                                        style="padding-top: 4pt;padding-left: 118pt;padding-right: 115pt;text-indent: 0pt;text-align: center;">
+                                        Sanction &amp; PEP - Global</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        US
+                                        Department of State - Iran and Syria Nonproliferation</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        US
+                                        Department of State - Iran, North Korea, and Syria Nonproliferation</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Minister of Foreign Affairs -Special Economic Measures -Syria, Canada</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        US
+                                        Iran and Syria Nonproliferation Act</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:22pt">
+                                <td style="width:482pt;border-top-style:solid;border-top-width:1pt;border-top-color:#1C1A1A;border-left-style:solid;border-left-width:1pt;border-left-color:#1C1A1A;border-bottom-style:solid;border-bottom-width:1pt;border-bottom-color:#1C1A1A;border-right-style:solid;border-right-width:1pt;border-right-color:#1C1A1A"
+                                    colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15"
+                                        style="padding-top: 4pt;padding-left: 118pt;padding-right: 115pt;text-indent: 0pt;text-align: center;">
+                                        Web and Media Searches – Global</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Internet Searches</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Media Searches</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:19pt">
+                                <td style="width:482pt;border-top-style:solid;border-top-width:1pt;border-top-color:#1C1A1A;border-left-style:solid;border-left-width:1pt;border-left-color:#1C1A1A;border-bottom-style:solid;border-bottom-width:1pt;border-bottom-color:#1C1A1A;border-right-style:solid;border-right-width:1pt;border-right-color:#1C1A1A"
+                                    colspan="2" bgcolor="#D6DFF0">
+                                    <p class="s15" style="text-indent: 0pt;text-align: center;">
+                                        Credit and Reputational Risk Database Checks</p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Global Federal Banks</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:31pt">
+                                <td>
+                                    <p class="s16">Indian
+                                        Politically Exposed Persons (PEP) Database-Civil Litigation Database checks</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:31pt">
+                                <td>
+                                    <p class="s16">
+                                        Ministry
+                                        of
+                                        Corporate Affairs of Global - Vanishing companies &amp; disqualified directors
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Insurance Regulatory and Development Authority</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="height:18pt">
+                                <td>
+                                    <p class="s16">
+                                        Competition Commission of Global countries</p>
+                                </td>
+                                <td>
+                                    <p class="s16">
+                                        No record
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="buttons d-flex justify-content-around my-5">
+    <button class="btn btn-secondary" type="button"
+        onclick="window.location.href= '/candidate/{{verification_record.candidate.pk}}'">
+        Cancel
+    </button>
+    <button class="btn btn-primary" type="button" onclick="window.print()"> Print Report </button>
+</div>
+<div id="divFooter" class="d-flex justify-content-center footer-repeat">
+    <div class="text-center footerContainer">
+        <h6>Confidential</h6>
+        <div>Website: bgv.vorkinsta.com</div>
+        <div>Email: verfication@vorkinsta.com</div>
+        <div>Landline: +91-2231402672</div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}
