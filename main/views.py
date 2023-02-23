@@ -151,16 +151,15 @@ class ChangeLanguageView(TemplateView):
     template_name = 'main/change_language.html'
 
 
-# @login_required
-def secureView(request, file):
-    print("test")
-    # if request.user.is_superuser:
-    #     document = get_object_or_404(documents_store, files='/uploads/'+file)
-    #     files, file_name = os.path.split(file)
-    #     response = FileResponse(document.files)
-    #     return response
-    # else:
-    #     return HttpResponse("You are not admin.")
+@login_required
+def secureView(request, text, userid, file):
+    if request.user.is_superuser and request.user.username == 'admin':
+        filepath = 'uploads/'+ text + '/' + userid + '/' + file
+        document = get_object_or_404(documents_store, file=filepath)
+        response = FileResponse(document.file)
+        return response
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 def UploadMultipleFiles(files, candidate_obj, uploader_type, admin_store_object, doc_type, clearable):
     if clearable:

@@ -9,16 +9,8 @@ admin.autodiscover()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    path('', IndexPageView.as_view(), name='index'),
-    path('candidate/<int:pk>', AdminCandidatePageView.as_view(), name='AdminCandidatePageView'),
-    path('candidate/<int:pk>/report', CandidateReportPageView.as_view(), name='CandidateReportPageView'),
-
     path('i18n/', include('django.conf.urls.i18n')),
-    path('language/', ChangeLanguageView.as_view(), name='change_language'),
-
     path('accounts/', include('accounts.urls')),
-
     path('', include('main.urls')),
 ]
 
