@@ -52,6 +52,13 @@
         padding: 0.5rem;
     }
 
+    .card-header{
+        background-color: rgba(226, 237, 255, 1);
+        color: #0d3451;
+        border: 1px;
+        border-radius: 7px;
+    }
+
     @media screen and (max-width: 800px) {
         .main_container {
             width: 100%
@@ -67,7 +74,7 @@
         <div class="w-100" class="customForm">
             <form class="w-100" id="employeeForm" method='post' enctype="multipart/form-data">
                 {% csrf_token %}
-                <h3 class="card-header rounded">
+                <h3 class="card-header">
                     BGV Submission List
                 </h3>
                 {% if submittedEmployees %}

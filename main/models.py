@@ -49,8 +49,17 @@ class employee_store(models.Model):
 
     @property
     def employment_filename(self):
-        name = self.employment_file.name.split("/")[3]
-        return name
+        filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'candidate_employment', uploader_type = 'candidate')
+        print(filesObject)
+        filesList = []
+        for each in filesObject:
+            filesList.append(
+                {
+                    'filename': each.file.name.split("/")[3],
+                    'filelink': each.file
+                }
+            )
+        return filesList
 
     @property
     def candidate_fullname(self):
@@ -59,10 +68,10 @@ class employee_store(models.Model):
 
     def save(self, *args, **kwargs):
         self.updated_date = datetime.now()
-        super(self).save(*args, **kwargs)
+        super(employee_store, self).save(*args, **kwargs)
 
 
-class verification_store(models.Model):
+class admin_store(models.Model):
     def user_directory_path(instance, filename):
         x = instance.created_date.strftime("%b%d%Y")
         return 'verified/{0}/{1}/{2}'.format(instance.candidate.username, x, filename)
@@ -110,4 +119,109 @@ class verification_store(models.Model):
 
     def save(self, *args, **kwargs):
         self.updated_date = datetime.now()
-        super(self).save(*args, **kwargs)
+        super(admin_store, self).save(*args, **kwargs)
+
+    @property
+    def education_filename(self):
+        filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'education', uploader_type = 'admin')
+        filesList = []
+        for each in filesObject:
+            filesList.append(
+                {
+                    'filename': each.file.name.split("/")[3],
+                    'filelink': each.file
+                }
+            )
+        return filesList
+
+    @property
+    def employment_filename(self):
+        filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'employment', uploader_type = 'admin')
+        filesList = []
+        for each in filesObject:
+            filesList.append(
+                {
+                    'filename': each.file.name.split("/")[3],
+                    'filelink': each.file
+                }
+            )
+        return filesList
+
+    @property
+    def ecourt_filename(self):
+        filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'ecourt', uploader_type = 'admin')
+        filesList = []
+        for each in filesObject:
+            filesList.append(
+                {
+                    'filename': each.file.name.split("/")[3],
+                    'filelink': each.file
+                }
+            )
+        return filesList
+
+    @property
+    def address_filename(self):
+        filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'address', uploader_type = 'admin')
+        filesList = []
+        for each in filesObject:
+            filesList.append(
+                {
+                    'filename': each.file.name.split("/")[3],
+                    'filelink': each.file
+                }
+            )
+        return filesList
+
+    @property
+    def passport_filename(self):
+        filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'passport', uploader_type = 'admin')
+        filesList = []
+        for each in filesObject:
+            filesList.append(
+                {
+                    'filename': each.file.name.split("/")[3],
+                    'filelink': each.file
+                }
+            )
+        return filesList
+
+class documents_store(models.Model):
+
+    document_type_choice = (
+        ('candidate_employment', 'candidate_employment'),
+        ('education', 'education'),
+        ('employment', 'employment'),
+        ('ecourt', 'ecourt'),
+        ('address', 'address'),
+        ('passport', 'passport'),
+    )
+
+    uploader_type_choice = (
+        ('candidate', 'candidate'),
+        ('admin', 'admin'),
+    )
+
+    def user_directory_path(instance, filename):
+        if instance.created_date:
+            x = instance.created_date.strftime("%b%d%Y")
+            return 'uploads/{0}/{1}/{2}'.format(x, instance.admin_store.candidate.username, filename)
+        else:
+            x = datetime.now().strftime("%b%d%Y")
+            return 'uploads/{0}/{1}/{2}'.format(x, instance.admin_store.candidate.username, filename)
+    
+
+    candidate_obj = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
+    admin_store = models.ForeignKey(admin_store, on_delete=models.DO_NOTHING, null=True, blank=True)
+
+    file = models.FileField(upload_to=user_directory_path, null=True, blank=True, validators=[FileExtensionValidator(['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'])])
+
+    document_type = models.CharField(choices=document_type_choice, default='candidate_employment', max_length=50, null=True, blank=True)
+    uploader_type = models.CharField(choices=uploader_type_choice, default='candidate', max_length=50, null=True, blank=True)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        self.updated_date = datetime.now()
+        super(documents_store, self).save(*args, **kwargs)

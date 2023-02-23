@@ -111,6 +111,18 @@
             width: 100%
         }
     }
+
+    .eachProofUpload{
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgb(154, 152, 152);
+    }
+    .eachProofUpload div{
+        margin: 2.5px;
+    }
+    .eachProofUpload div a{
+        display: block;
+    }
 </style>
 {% endblock %}
 
@@ -309,10 +321,13 @@
                                 <tr>
                                     <td>Employment Document</td>
                                     <td>
-                                        <a name="downloadDoc"
-                                            href="/media/{{employee_record.employee_store.employment_file}}">
-                                            {{employee_record.employee_store.employment_filename}}
-                                        </a>
+                                        {% for file in employee_record.employee_store.employment_filename %}
+                                            <a name="downloadDoc"
+                                                href="/media/{{file.filelink}}">
+                                                {{file.filename}}
+                                            </a>
+                                            <br>
+                                        {% endfor %}
                                     </td>
                                 </tr>
                             </table>
@@ -363,7 +378,121 @@
                                 Upload Image Proofs
                             </h5>
                         </div>
-                        {% bootstrap_form form %}
+                        <div class="eachProofUpload">
+                            <h5>Education</h5>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                <div>
+                                    {% for file in employee_record.education_filename %}
+                                        <a name="downloadDoc"
+                                        target="_blank"
+                                            href="/media/{{file.filelink}}">
+                                            {{file.filename}}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                {{ form.education_verified }}
+                            </div>
+                        </div>
+                        <div class="eachProofUpload">
+                            <h5>Employment</h5>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                <div>
+                                    {% for file in employee_record.employment_filename %}
+                                        <a name="downloadDoc"
+                                            target="_blank"
+                                            href="/media/{{file.filelink}}">
+                                            {{file.filename}}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                {{ form.employment_verified }}
+                            </div>
+                        </div>
+                        <div class="eachProofUpload">
+                            <h5>Ecourt</h5>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                <div>
+                                    {% for file in employee_record.ecourt_filename %}
+                                        <a name="downloadDoc"
+                                        target="_blank"
+                                            href="/media/{{file.filelink}}">
+                                            {{file.filename}}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                {{ form.ecourt_verified }}
+                            </div>
+                        </div>
+                        <div class="eachProofUpload">
+                            <h5>Address</h5>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                <div>
+                                    {% for file in employee_record.address_filename %}
+                                        <a name="downloadDoc"
+                                        target="_blank"
+                                            href="/media/{{file.filelink}}">
+                                            {{file.filename}}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                {{ form.address_verified }}
+                            </div>
+                        </div>
+                        <div class="eachProofUpload">
+                            <h5>Passport</h5>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                <div>
+                                    {% for file in employee_record.passport_filename %}
+                                        <a name="downloadDoc"
+                                        target="_blank"
+                                            href="/media/{{file.filelink}}">
+                                            {{file.filename}}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="d-flex align-self-center">
+                                <div class="mr-3 align-self-center">
+                                    Change:
+                                </div>
+                                {{ form.passport_verified }}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-around my-5">

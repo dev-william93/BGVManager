@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 
 from main.views import *
 
+admin.autodiscover()
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -16,6 +18,8 @@ urlpatterns = [
     path('language/', ChangeLanguageView.as_view(), name='change_language'),
 
     path('accounts/', include('accounts.urls')),
+
+    path('', include('main.urls')),
 ]
 
 if settings.DEBUG:

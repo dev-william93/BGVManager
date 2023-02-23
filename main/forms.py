@@ -22,7 +22,7 @@ class EmployeeForm(forms.ModelForm):
 
             "form16_file" : forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'true', 'accept': "application/pdf,application/msword,.doc,.docx"}),
             "aadhar_file" : forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'true', 'accept': "application/pdf,application/msword,.doc,.docx"}),
-            "employment_file" : forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'true', 'accept': "application/pdf,application/msword,.doc,.docx"}),
+            "employment_file" : forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'true', 'accept': "application/pdf,application/msword,.doc,.docx", 'multiple': 'true'}),
             "education_file" : forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'true', 'accept': "application/pdf,application/msword,.doc,.docx"}),
             "passport_file" : forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'true', 'accept': "application/pdf,application/msword,.doc,.docx"}),
         }
@@ -46,15 +46,15 @@ class EmployeeForm(forms.ModelForm):
         return aadhar
 class VerificationForm(forms.ModelForm):
     class Meta:
-        model = verification_store
+        model = admin_store
         fields = ("overAll_status", "education_verified", "employment_verified", "ecourt_verified", "address_verified", "passport_verified", "education_remark", "employment_remark", "passport_remark", "address_remark", "court_remark")
         widgets = {
             "overAll_status": forms.Select(attrs={'class': 'form-control','label':"Color Code"}),
-            "education_verified" : forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg" }),
-            "employment_verified" : forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg"}),
-            "ecourt_verified" : forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg"}),
-            "address_verified" : forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg"}),
-            "passport_verified" : forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg"}),
+            "education_verified" : forms.FileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg" , 'multiple': 'true'}),
+            "employment_verified" : forms.FileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg", 'multiple': 'true'}),
+            "ecourt_verified" : forms.FileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg", 'multiple': 'true'}),
+            "address_verified" : forms.FileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg", 'multiple': 'true'}),
+            "passport_verified" : forms.FileInput(attrs={'class': 'form-control', 'accept': "image/png, image/jpeg", 'multiple': 'true'}),
             "education_remark" : forms.TextInput(attrs={'class': 'form-control'}),
             "employment_remark" : forms.TextInput(attrs={'class': 'form-control'}),
             "passport_remark" : forms.TextInput(attrs={'class': 'form-control'}),
