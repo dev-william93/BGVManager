@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from .models import UserExtension
 
 
 class UserCacheMixin:
@@ -127,6 +128,14 @@ class SignUpForm(UserCreationForm):
 
         return email
 
+
+class SignUpExtensionForm(forms.ModelForm):
+    class Meta:
+        model = UserExtension
+        fields = ['date_of_birth', 'father_name']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'required' : 'true'})
+        }
 
 class ResendActivationCodeForm(UserCacheMixin, forms.Form):
     email_or_username = forms.CharField(label=_('Email or Username'))

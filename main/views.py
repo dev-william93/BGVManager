@@ -60,7 +60,7 @@ class IndexPageView(TemplateView):
                 if form.is_valid():
                     employee_store_form = form.save()
                     admin_store_object  = admin_store.objects.create(candidate=request.user, employee_store= employee_store_form)
-                    UploadMultipleFiles(employment_files, request.user, 'candidate', admin_store_object, 'candidate_employment')
+                    UploadMultipleFiles(employment_files, request.user, 'candidate', admin_store_object, 'candidate_employment', False)
                     return HttpResponseRedirect(reverse('index'))
                 else:
                     print("Not valid")
@@ -139,13 +139,14 @@ class CandidateReportPageView(TemplateView):
     model = admin_store
     template_name = 'main/reports.html'
     
-    def get(self, request, pk):
+    def get(self, request, pk, businessUser):
         try:
             if request.user.is_superuser:
                 verification_record = admin_store.objects.filter(candidate=pk)
                 if verification_record:
+                    userextension_obj = UserExtension.objects.get(user=pk)
                     collegeName = verification_record.first().employee_store.education[0]
-                    return render(request, 'main/admin/reports.html', {"verification_record": verification_record.first(), 'dateTime': datetime.datetime.now(), 'collegeName': collegeName })
+                    return render(request, 'main/admin/reports.html', {"verification_record": verification_record.first(), 'dateTime': datetime.datetime.now(), 'collegeName': collegeName, 'businessUser': businessUser, 'userextension_obj': userextension_obj })
             else:
                 return HttpResponseRedirect(reverse('index'))
         except:

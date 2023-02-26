@@ -6,7 +6,7 @@ from django.contrib.auth.views import (
     LogoutView as BaseLogoutView, PasswordChangeView as BasePasswordChangeView,
     PasswordResetDoneView as BasePasswordResetDoneView, PasswordResetConfirmView as BasePasswordResetConfirmView,
 )
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.crypto import get_random_string
 from django.utils.decorators import method_decorator
 from django.utils.http import url_has_allowed_host_and_scheme as is_safe_url
@@ -23,11 +23,11 @@ from .utils import (
     send_activation_email, send_reset_password_email, send_forgotten_username_email, send_activation_change_email,
 )
 from .forms import (
-    SignInViaUsernameForm, SignInViaEmailForm, SignInViaEmailOrUsernameForm, SignUpForm,
+    SignInViaUsernameForm, SignInViaEmailForm, SignInViaEmailOrUsernameForm, SignUpForm, SignUpExtensionForm,
     RestorePasswordForm, RestorePasswordViaEmailOrUsernameForm, RemindUsernameForm,
     ResendActivationCodeForm, ResendActivationCodeViaEmailForm, ChangeProfileForm, ChangeEmailForm,
 )
-from .models import Activation
+from .models import Activation, UserExtension
 
 
 class GuestOnlyView(View):
@@ -89,6 +89,9 @@ class SignUpView(GuestOnlyView, FormView):
     template_name = 'accounts/sign_up.html'
     form_class = SignUpForm
 
+    # def get(self, request):
+    #     return render(request, 'accounts/sign_up.html', {"form": SignUpForm(), "form1": SignUpExtensionForm()})
+
     def form_valid(self, form):
         request = self.request
         user = form.save(commit=False)
@@ -109,6 +112,7 @@ class SignUpView(GuestOnlyView, FormView):
         if settings.DISABLE_USERNAME:
             user.username = f'user_{user.id}'
             user.save()
+            
 
         if settings.ENABLE_USER_ACTIVATION:
             code = get_random_string(20)
@@ -118,10 +122,18 @@ class SignUpView(GuestOnlyView, FormView):
             act.user = user
             act.save()
 
+            user_extension = UserExtension()
+            user_extension.father_name = request.POST['father_name']
+            user_extension.date_of_birth = request.POST['date_of_birth']
+            user_extension.user = user
+            user_extension.save()
+
+
             send_activation_email(request, user.email, code)
 
             messages.success(
                 request, _('You are signed up. To activate the account, follow the link sent to the mail.'))
+
         else:
             raw_password = form.cleaned_data['password1']
 

@@ -500,8 +500,9 @@
                         onclick="javascript:window.location.href='/'">Back</button>
                     <button class="btn btn-info" type="submit">Save</button>
                     <button class="btn btn-primary" type="button"
-                        onclick="javascript:window.location.href=`{% url 'CandidateReportPageView' pk %}`">Generate
-                        Report</button>
+                        onclick="generateReportWithBussniessName()">
+                        Generate Report
+                    </button>
                 </div>
             </form>
         </div>
@@ -592,6 +593,13 @@
         document.getElementById("id_court_remark").value = document.getElementById("court_remark").value;
         // document.getElementById("id_overAll_status").value = document.getElementById("overAll_status").value;
         document.getElementById("candidateForm").submit();
+    }
+
+    function generateReportWithBussniessName(){
+        let businessUser = prompt("Please enter the Business User Name", "");
+        let userID = "{{pk}}"
+        let reportURL = `${userID}/${businessUser}/report`
+        window.location.href = reportURL
     }
 
 </script>
