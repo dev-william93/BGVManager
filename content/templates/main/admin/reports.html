@@ -454,10 +454,15 @@
                         </table>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <img src="/media/{{verification_record.education_verified}}" alt="education"
-                            srcset="/media/{{verification_record.education_verified}}">
+                        <div>
+                            {% for file in verification_record.education_filename %}
+                            <div class="d-flex justify-content-center my-5">
+                                <img style="max-width: 90vw; max-height: 85vh;" src="/media/{{file.filelink}}" alt="education" srcset="/media/{{file.filelink}}" />
+                            </div>
+                            <div class="pagebreak"></div>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="pagebreak"></div>
                     <div>
                         <table class="dataTable text-left w-100">
                             <tr class="font-weight-bold greyBg text-center">
@@ -474,15 +479,30 @@
                     </div>
                     <div class="pagebreak"></div>
                     <div class="d-flex justify-content-center" style="margin-top: 5rem;">
-                        <img style="max-width: 90vw; max-height: 85vh;"
-                            src="/media/{{verification_record.address_verified}}" alt="address"
-                            srcset="/media/{{verification_record.address_verified}}">
+                        <div>
+                            {% for file in verification_record.address_filename %}
+                            <div class="d-flex justify-content-center my-5">
+                                <img style="max-width: 90vw; max-height: 85vh;" src="/media/{{file.filelink}}" alt="address" srcset="/media/{{file.filelink}}" />
+                            </div>
+                            <div class="pagebreak"></div>
+                            {% endfor %}
+                        </div>
+                        <!-- <img 
+                            src="/media/{{verification_record.address_verified}}" alt=""
+                            srcset="/media/{{verification_record.address_verified}}"> -->
                     </div>
-                    <div class="pagebreak"></div>
                     <div class="d-flex justify-content-center" style="margin-top: 5rem;">
-                        <img style="max-width: 90vw; max-height: 85vh;"
+                        <div>
+                            {% for file in verification_record.passport_filename %}
+                            <div class="d-flex justify-content-center my-5">
+                                <img style="max-width: 90vw; max-height: 85vh;" src="/media/{{file.filelink}}" alt="address" srcset="/media/{{file.filelink}}" />
+                            </div>
+                            <div class="pagebreak"></div>
+                            {% endfor %}
+                        </div>
+                        <!-- <img style="max-width: 90vw; max-height: 85vh;"
                             src="/media/{{verification_record.passport_verified}}" alt="passport"
-                            srcset="/media/{{verification_record.passport_verified}}">
+                            srcset="/media/{{verification_record.passport_verified}}"> -->
                     </div>
                     <div class="pagebreak"></div>
                     <div class="tableContainer">

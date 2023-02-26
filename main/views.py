@@ -44,27 +44,30 @@ class IndexPageView(TemplateView):
             return HttpResponseRedirect(reverse('index'))
         
     def post(self, request):
-        if request.user.is_superuser:
-            form = EmployeeForm(request.POST, request.FILES)
-            if form.is_valid():
-                return HttpResponseRedirect(reverse('index'))
+        try:
+            if request.user.is_superuser:
+                form = EmployeeForm(request.POST, request.FILES)
+                if form.is_valid():
+                    return HttpResponseRedirect(reverse('index'))
+                else:
+                    print("Not valid")
+                    return HttpResponseRedirect(reverse('index'))
             else:
-                print("Not valid")
-                return HttpResponseRedirect(reverse('index'))
-        else:
-            request.POST._mutable = True
-            request.POST['candidate'] = request.user.pk
-            form = EmployeeForm(request.POST, request.FILES)
-            employment_files = request.FILES.getlist('employment_file')
-            if form.is_valid():
-                employee_store_form = form.save()
-                admin_store_object  = admin_store.objects.create(candidate=request.user, employee_store= employee_store_form)
-                UploadMultipleFiles(employment_files, request.user, 'candidate', admin_store_object, 'candidate_employment')
-                return HttpResponseRedirect(reverse('index'))
-            else:
-                print("Not valid")
-                print(form.errors)
-                return HttpResponseRedirect(reverse('index'))
+                request.POST._mutable = True
+                request.POST['candidate'] = request.user.pk
+                form = EmployeeForm(request.POST, request.FILES)
+                employment_files = request.FILES.getlist('employment_file')
+                if form.is_valid():
+                    employee_store_form = form.save()
+                    admin_store_object  = admin_store.objects.create(candidate=request.user, employee_store= employee_store_form)
+                    UploadMultipleFiles(employment_files, request.user, 'candidate', admin_store_object, 'candidate_employment')
+                    return HttpResponseRedirect(reverse('index'))
+                else:
+                    print("Not valid")
+                    print(form.errors)
+                    return HttpResponseRedirect(reverse('index'))
+        except:
+            return HttpResponseRedirect(reverse('index'))
 
 @method_decorator(login_required, name='dispatch')
 class AdminCandidatePageView(TemplateView):
@@ -138,10 +141,11 @@ class CandidateReportPageView(TemplateView):
     
     def get(self, request, pk):
         try:
-            verification_record = admin_store.objects.filter(candidate=pk)
-            if verification_record:
-                collegeName = verification_record.first().employee_store.education[0]
-                return render(request, 'main/admin/reports.html', {"verification_record": verification_record.first(), 'dateTime': datetime.datetime.now(), 'collegeName': collegeName })
+            if request.user.is_superuser:
+                verification_record = admin_store.objects.filter(candidate=pk)
+                if verification_record:
+                    collegeName = verification_record.first().employee_store.education[0]
+                    return render(request, 'main/admin/reports.html', {"verification_record": verification_record.first(), 'dateTime': datetime.datetime.now(), 'collegeName': collegeName })
             else:
                 return HttpResponseRedirect(reverse('index'))
         except:
