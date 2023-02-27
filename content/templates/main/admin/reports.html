@@ -218,10 +218,11 @@
         padding: 0 0.5rem;
     }
 
-    .proofImages{
-        max-width: 90vw; 
-        max-height: 85vh; 
-        margin-top: 5vh;
+    .proofImages {
+        max-width: 90vw;
+        max-height: 80vh;
+        margin-top: 7vh;
+        top: 0;
     }
 
     @media print {
@@ -233,11 +234,6 @@
             /* Firefox 48 – 96 */
             print-color-adjust: exact !important;
             /* Firefox 97+, Safari 15.4+ */
-        }
-
-        html,
-        body {
-            height: 99% !important;
         }
 
         .buttons {
@@ -261,9 +257,13 @@
             page-break-after: always;
         }
 
-        .pagebreak+div, .pagebreak+h2, .pagebreak .tableContainer{
-            margin-top: 5vh;
+        .pagebreak+div,
+        .pagebreak+h2,
+        .pagebreak .tableContainer {
+            margin-top: 7vh;
             max-height: 80vh !important;
+            align-self: start;
+            align-items: start;
         }
 
         .logoImageContainer {
@@ -320,7 +320,7 @@
                     <table class="candidateTable text-left mb-0" style="width: 75%;">
                         <tr>
                             <td class="w-25">Name of Candidate</td>
-                            <td colspan="4">
+                            <td colspan="4" class="text-capitalize">
                                 {{verification_record.candidate.first_name}}
                                 {{verification_record.candidate.last_name}}
                             </td>
@@ -331,7 +331,7 @@
                         </tr>
                         <tr>
                             <td class="w-25">Father's Name</td>
-                            <td colspan="4">{{userextension_obj.father_name}}</td>
+                            <td colspan="4" class="text-capitalize">{{userextension_obj.father_name}}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Reference No </td>
@@ -339,7 +339,7 @@
                         </tr>
                         <tr>
                             <td class="w-25">Business User</td>
-                            <td colspan="4">{{businessUser}}</td>
+                            <td colspan="4" class="text-capitalize">{{businessUser}}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Date Initiated</td>
@@ -388,26 +388,28 @@
                         </tr>
                         <tr>
                             <td>Education verification</td>
-                            <td class="last2">{{verification_record.updated_date}}</td>
-                            <td class="statusData" style="color: {{verification_record.education_status|GetDisplayName}}">
+                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
+                            <td class="statusData"
+                                style="color: {{verification_record.education_status|GetDisplayName}}">
                                 {{verification_record.education_status|GetDisplayName}}</td>
                         </tr>
                         <tr>
                             <td>Present Address</td>
-                            <td class="last2">{{verification_record.updated_date}}</td>
+                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
                             <td class="statusData" style="color: {{verification_record.address_status|GetDisplayName}}">
                                 {{verification_record.address_status|GetDisplayName}}</td>
                         </tr>
                         <tr>
                             <td>Database check for India - Criminal and Civil</td>
-                            <td class="last2">{{verification_record.updated_date}}</td>
+                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
                             <td class="statusData" style="color: {{verification_record.court_status|GetDisplayName}}">
                                 {{verification_record.court_status|GetDisplayName}}</td>
                         </tr>
                         <tr>
                             <td>Database check for Global - Criminal and Civil</td>
-                            <td class="last2">{{verification_record.updated_date}}</td>
-                            <td class="statusData" style="color: {{verification_record.passport_status|GetDisplayName}}">
+                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
+                            <td class="statusData"
+                                style="color: {{verification_record.passport_status|GetDisplayName}}">
                                 {{verification_record.passport_status|GetDisplayName}}</td>
                         </tr>
                     </table>
@@ -464,12 +466,15 @@
                         <div>
                             {% for file in verification_record.education_filename %}
                             <div class="d-flex justify-content-center my-5">
-                                <img class="proofImages" src="/media/{{file.filelink}}" alt="education" srcset="/media/{{file.filelink}}" />
+                                <img class="proofImages" src="/media/{{file.filelink}}" alt="education"
+                                    srcset="/media/{{file.filelink}}" />
                             </div>
                             <div class="pagebreak"></div>
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="pagebreak"></div>
+                    <div class="pagebreak"></div>
                     <div>
                         <table class="dataTable text-left w-100">
                             <tr class="font-weight-bold greyBg text-center">
@@ -485,24 +490,24 @@
                         </table>
                     </div>
                     <div class="pagebreak"></div>
-                    <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                    <div class="d-flex justify-content-center">
                         <div>
                             {% for file in verification_record.address_filename %}
                             <div class="d-flex justify-content-center my-5">
-                                <img class="proofImages" src="/media/{{file.filelink}}" alt="address" srcset="/media/{{file.filelink}}" />
+                                <img class="proofImages" src="/media/{{file.filelink}}" alt="address"
+                                    srcset="/media/{{file.filelink}}" />
                             </div>
                             <div class="pagebreak"></div>
                             {% endfor %}
                         </div>
-                        <!-- <img 
-                            src="/media/{{verification_record.address_verified}}" alt=""
-                            srcset="/media/{{verification_record.address_verified}}"> -->
                     </div>
-                    <div class="d-flex justify-content-center" style="margin-top: 5rem;">
+                    <div class="pagebreak"></div>
+                    <div class="d-flex justify-content-center">
                         <div>
                             {% for file in verification_record.passport_filename %}
                             <div class="d-flex justify-content-center my-5">
-                                <img class="proofImages" src="/media/{{file.filelink}}" alt="address" srcset="/media/{{file.filelink}}" />
+                                <img class="proofImages" src="/media/{{file.filelink}}" alt="address"
+                                    srcset="/media/{{file.filelink}}" />
                             </div>
                             <div class="pagebreak"></div>
                             {% endfor %}
@@ -835,6 +840,7 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="pagebreak"></div>
                     <h2 class="headerAnnuxer">Annexure G</h2>
                     <div class="tableContainer">
                         <table style="border-collapse:collapse;" cellspacing="0">
@@ -1332,8 +1338,8 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="pagebreak"></div>
                     <h2 class="headerAnnuxer">Annexure H</h2>
-    
                     <div class="tableContainer">
                         <table style="border-collapse:collapse;" cellspacing="0">
                             <tr style="height:18pt">
@@ -1787,6 +1793,7 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="pagebreak"></div>
                     <h2 class="headerAnnuxer">Annexure I</h2>
                     <div class="tableContainer">
                         <table style="border-collapse:collapse;" cellspacing="0">
