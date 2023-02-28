@@ -130,17 +130,17 @@
                                     </div>
                                     <div class="col">
                                         <input required type="text" name="degree" class="form-control"
-                                            placeholder="Degree">
+                                            placeholder="Highest Qualification">
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
                                         <input required type="month" name="yoj" class="form-control yoj" 
-                                            placeholder="Year of Joining">
+                                            placeholder="Month & Year of Issue/Passing Certificate">
                                     </div>
                                     <div class="col">
-                                        <input required type="month" name="yog" class="form-control jog" 
-                                            placeholder="Year of Graduation">
+                                        <input required type="text" name="yog" class="form-control jog" 
+                                            placeholder="Certificate No">
                                     </div>
                                 </div>
                             </div>
@@ -173,10 +173,22 @@
                                 placeholder="Passport Number" title="" id="passport" pattern = "[A-Z]{1}[0-9]{7}">
                         </div>
                         <div class="form-group">
-                            <label for="address">Present Address From To<i class="requiredStar" style="color: red;">*</i></label>
+                            <label for="address">Present Address<i class="requiredStar" style="color: red;">*</i></label>
                             <textarea name="address" cols="40" rows="10" class="form-control" required="true"
-                                maxlength="250" placeholder="Present Address From To" title="" id="address"
+                                maxlength="250" placeholder="Present Address" title="" id="address"
                                 spellcheck="false"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                            <label for="passport">Period of Stay [Present Address]<i class="requiredStar" style="color: red;">*</i></label>
+                            <input type="number" min="1950" max="2099" step="1" name="address_period" class="form-control" required="true" maxlength="20"
+                                placeholder="2000" title="Period of Stay" id="address_period">
+                            </div>
+                            <div class="form-group col">
+                            <label for="passport">Country Location<i class="requiredStar" style="color: red;">*</i></label>
+                            <input type="text" name="country_location" class="form-control" required="true" maxlength="20"
+                                placeholder="Country Location" title="Country Location" id="country_location">
+                            </div>
                         </div>
                     </div>
                     <div class="mt-2 border border-dark rounded p-3">
@@ -275,8 +287,8 @@
             formEducation.push({
                 "collegeName": collegeName[idx].value,
                 "degree": degree[idx].value,
-                "yearOfJoining": yoj[idx].value,
-                "yearOfGraduation": yog[idx].value,
+                "monthYearOfIssued": yoj[idx].value,
+                "certificateNo": yog[idx].value,
             })
         });
 

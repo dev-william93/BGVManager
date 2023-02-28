@@ -11,10 +11,18 @@ class Activation(models.Model):
 
 
 class UserExtension(models.Model):
+    
+    gender_choice = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+    )
+
     def create_new_ref_number():
       return str(random.randint(1000000000, 9999999999))[:6]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_of_birth = models.DateTimeField()
     father_name = models.CharField(max_length=150)
+    gender = models.CharField(choices=gender_choice, default='male', max_length=10)
     reference = models.IntegerField(primary_key=True, default=create_new_ref_number, editable=False)

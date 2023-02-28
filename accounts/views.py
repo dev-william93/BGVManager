@@ -125,6 +125,7 @@ class SignUpView(GuestOnlyView, FormView):
             user_extension = UserExtension()
             user_extension.father_name = request.POST['father_name']
             user_extension.date_of_birth = request.POST['date_of_birth']
+            user_extension.gender = request.POST['gender']
             user_extension.user = user
             user_extension.save()
 

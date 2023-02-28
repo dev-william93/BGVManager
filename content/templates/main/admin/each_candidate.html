@@ -162,7 +162,7 @@
                     <div class="mt-2 border border-dark rounded p-3">
                         <div class="d-flex justify-content-between">
                             <h5>
-                                Highest Education
+                                Highest Qualification
                             </h5>
                             <!-- <button type="submit" style="height: fit-content;" class="btn btn-warning"> Save </button> -->
                             <select class="form-control" name="education_status"
@@ -245,6 +245,18 @@
                             <textarea name="address" cols="40" rows="10" class="form-control" disabled="true"
                                 maxlength="250" placeholder="Present Address From To" title="" id="address"
                                 spellcheck="false">{{employee_record.employee_store.address}}</textarea>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col">
+                            <label for="passport">Period of Stay [Present Address]<i class="requiredStar" style="color: red;">*</i></label>
+                            <input type="number" min="1950" max="2099" step="1" value="{{employee_record.employee_store.address_period}}" name="address_period" class="form-control" required="true" maxlength="20"
+                                placeholder="2000" title="Period of Stay" id="address_period">
+                            </div>
+                            <div class="form-group col">
+                            <label for="passport">Country Location<i class="requiredStar" style="color: red;">*</i></label>
+                            <input type="text" name="country_location" class="form-control" value="{{employee_record.employee_store.country_location}}" required="true" maxlength="20"
+                                placeholder="Country Location" title="Country Location" id="country_location">
+                            </div>
                         </div>
                         <div>
                             <div class="form-group">
@@ -562,7 +574,7 @@
         if (education_obj.length >= 1) {
             education_obj.forEach(element => {
                 let education_container = document.getElementById("education_container")
-                let addCompanyFields = `<div id='employer${education_container.children.length}'><div id="educate0"> <div class="row mt-3"> <div class="col"> <input required type="text" disabled value=${element.collegeName} name="collegeName" class="form-control" placeholder="College Name"> </div> <div class="col"> <input required type="text" disabled value=${element.degree} name="degree" class="form-control" placeholder="Degree"> </div> </div> <div class="row mt-3"> <div class="col"> <input required type="month" disabled value=${element.yearOfJoining} name="yoj" class="form-control" placeholder="Year of Joining"> </div> <div class="col"> <input required type="month" disabled value=${element.yearOfGraduation} name="yog" class="form-control" placeholder="Year of Graduation"> </div> </div> </div> <hr/> `
+                let addCompanyFields = `<div id='employer${education_container.children.length}'><div id="educate0"> <div class="row mt-3"> <div class="col"> <input required type="text" disabled value=${element.collegeName} name="collegeName" class="form-control" placeholder="College Name"> </div> <div class="col"> <input required type="text" disabled value=${element.degree} name="degree" class="form-control" placeholder="Degree"> </div> </div> <div class="row mt-3"> <div class="col"> <input required type="month" disabled value=${element.monthYearOfIssued} name="yoj" class="form-control" placeholder="Year of Joining"> </div> <div class="col"> <input required type="text" disabled value=${element.certificateNo} name="yog" class="form-control" placeholder="Year of Graduation"> </div> </div> </div> <hr/> `
                 education_container.insertAdjacentHTML('beforeend', addCompanyFields)
             });
         }

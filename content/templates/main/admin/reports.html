@@ -144,8 +144,10 @@
     }
 
     .footerContainer {
-        border-top: 1px solid gray;
+        border-top: 3px solid gray;
         padding-top: 1rem;
+        font-size: 10px;
+        width: 98vw;
     }
 
     @media screen and (max-width: 800px) {
@@ -185,6 +187,10 @@
     .headerAnnuxer {
         text-indent: 0pt;
         text-align: center;
+        color: #0d3451;
+        font-weight: 400;
+        font-size: 1rem;
+        text-decoration: underline;
         /* margin: 2rem 0rem; */
     }
 
@@ -221,8 +227,7 @@
     .proofImages {
         max-width: 90vw;
         max-height: 80vh;
-        margin-top: 7vh;
-        top: 0;
+        margin-top: 5vh;
     }
 
     @media print {
@@ -259,8 +264,9 @@
 
         .pagebreak+div,
         .pagebreak+h2,
-        .pagebreak .tableContainer {
-            margin-top: 7vh;
+        .pagebreak .tableContainer,
+        .afterPageBreak {
+            margin-top: 8vh;
             max-height: 80vh !important;
             align-self: start;
             align-items: start;
@@ -268,10 +274,17 @@
 
         .logoImageContainer {
             display: flex !important;
+            justify-content: center;
             width: 100% !important;
             position: fixed !important;
             top: 0 !important;
             margin-left: -3rem;
+        }
+
+        .logoImageContainer div {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
         }
 
         table {
@@ -287,6 +300,9 @@
             display: block !important;
         }
 
+        .annexureNav {
+            color: #0d3451;
+        }
 
         .pageContent {
             page-break-before: auto;
@@ -303,10 +319,19 @@
 
 <div>
     <div class="logoImageContainer">
-        <img class="logoImage" src="{% static 'img/logo.png' %}" alt="logo" srcset="{% static 'img/logo.png' %}">
+        <div>
+            <div style="display:flex; justify-content: center; margin: auto;">
+                <img class="logoImage" src="{% static 'img/logo.png' %}" alt="logo"
+                    srcset="{% static 'img/logo.png' %}">
+            </div>
+            <div>
+                Vorkinsta a background verification and legal database search company powered by Clariont and its Group
+                of Companies
+            </div>
+        </div>
     </div>
 </div>
-<div class="pageContent">
+<div class="pageContent" style="margin-top: 3vh;">
     <div class="m-auto" style="display:flex; justify-content: center; margin: auto;">
         <div class="w-100" style="align-self: center; ">
             <div class="w-100" class="customForm">
@@ -327,7 +352,7 @@
                         </tr>
                         <tr>
                             <td class="w-25">Date of Birth</td>
-                            <td colspan="4">{{userextension_obj.date_of_birth|date:"M d, Y"}}</td>
+                            <td colspan="4">{{userextension_obj.date_of_birth|date:"d/m/Y"}}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Father's Name</td>
@@ -335,7 +360,7 @@
                         </tr>
                         <tr>
                             <td class="w-25">Reference No </td>
-                            <td colspan="4">#{{userextension_obj.reference}}</td>
+                            <td colspan="4">#VI{{userextension_obj.reference}}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Business User</td>
@@ -422,21 +447,18 @@
                         </h3>
                         <table class="dataTable text-left w-100">
                             <tr class="font-weight-bold greyBg text-center">
-                                <td colspan="3">Education Verification: Education </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Particulars</td>
-                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Application
-                                    Details
-                                </td>
-                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Verified Details
+                                <td colspan="3">Education Verification
+                                    <br>
+                                    <h6>Reference #VI{{userextension_obj.reference}}</h6>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the
-                                    Institution</td>
-                                <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
-                                <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
+                                <td style="width: 40%; font-weight: bold; background-color: #f4f4f4;">Particulars</td>
+                                <td style="width: 30%; font-weight: bold; background-color: #f4f4f4;">
+                                    Application Details
+                                </td>
+                                <td style="width: 30%; font-weight: bold; background-color: #f4f4f4;">Verified Details
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the
@@ -445,23 +467,40 @@
                                 <td style="width: 33.3%;">{{verification_record.employee_store.candidate_fullname}}</td>
                             </tr>
                             <tr>
-                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Degree</td>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the
+                                    Institution</td>
+                                <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
+                                <td style="width: 33.3%;">{{collegeName.collegeName}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Highest
+                                    Qualification</td>
                                 <td style="width: 33.3%;">{{collegeName.degree}}</td>
                                 <td style="width: 33.3%;">{{collegeName.degree}}</td>
                             </tr>
                             <tr>
-                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Month & Year of
-                                    Passing </td>
-                                <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
-                                <td style="width: 33.3%;">{{collegeName.yearOfGraduation}}</td>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Month & Year of Issue/Passing Certificate
+                                </td>
+                                <td style="width: 33.3%;">{{collegeName.monthYearOfIssued}}</td>
+                                <td style="width: 33.3%;">{{collegeName.monthYearOfIssued}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Certificate #
+                                </td>
+                                <td style="width: 33.3%;">{{collegeName.certificateNo}}</td>
+                                <td style="width: 33.3%;">{{collegeName.certificateNo}}</td>
                             </tr>
                             <tr>
                                 <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
-                                <td colspan="2">{{verification_record.education_remark}}</td>
+                                <td colspan="2">{{verification_record.education_remark}}. Please refer <i
+                                        class="annexureNav">Annexure A</i> for verified record.</td>
                             </tr>
                         </table>
                     </div>
                     <div class="pagebreak"></div>
+                    <h2 class="headerAnnuxer">Annexure A</h2>
                     <div class="d-flex justify-content-center">
                         <div>
                             {% for file in verification_record.education_filename %}
@@ -473,19 +512,127 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="pagebreak"></div>
-                    <div class="pagebreak"></div>
-                    <div>
+                    <div class="afterPageBreak">
                         <table class="dataTable text-left w-100">
                             <tr class="font-weight-bold greyBg text-center">
-                                <td colspan="3">Database Verification</td>
+                                <td colspan="3">
+                                    Address Verification – Court Record Check
+                                    <br>
+                                    <h6>Reference #VI{{userextension_obj.reference}}</h6>
+                                </td>
                             </tr>
                             <tr>
-                                <td colspan="2">Record Not Found</td>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Particulars</td>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Application Details
+                                </td>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Verified Details
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">Name of the
+                                    Candidate </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.candidate_fullname}}
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.candidate_fullname}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Present Address
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.address}}
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.address}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Date of Birth
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.candidate.userextension.date_of_birth|date:"d/m/Y"}}
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.candidate.userextension.date_of_birth|date:"d/m/Y"}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Period of Stay
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.address_period}}
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.address_period}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Gender
+                                </td>
+                                <td style="width: 33.3%;" class="text-capitalize">
+                                    {{verification_record.employee_store.candidate.userextension.gender}}
+                                </td>
+                                <td style="width: 33.3%;" class="text-capitalize">
+                                    {{verification_record.employee_store.candidate.userextension.gender}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Country Location
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.country_location}}
+                                </td>
+                                <td style="width: 33.3%;">
+                                    {{verification_record.employee_store.country_location}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Court
+                                </td>
+                                <td style="width: 33.3%;">
+                                    -
+                                </td>
+                                <td style="width: 33.3%;">
+                                    Refer Annexure
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Jurisdiction
+                                </td>
+                                <td style="width: 33.3%;">
+                                    -
+                                </td>
+                                <td style="width: 33.3%;">
+                                    Refer Annexure
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
+                                    Location
+                                </td>
+                                <td style="width: 33.3%;">
+                                    -
+                                </td>
+                                <td style="width: 33.3%;">
+                                    Refer Annexure
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width: 2.5%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
-                                <td>{{verification_record.address_remark}}</td>
+                                <td colspan="2">{{verification_record.address_remark}} <br> Refer to <i
+                                        class="annexureNav">Annexure B & C</i></td>
                             </tr>
                         </table>
                     </div>
@@ -493,6 +640,11 @@
                     <div class="d-flex justify-content-center">
                         <div>
                             {% for file in verification_record.address_filename %}
+                            {% if file.idx == 0 %}
+                                <h2 class="headerAnnuxer">Annexure B</h2>
+                            {% elif file.idx == 1 %}
+                                <h2 class="headerAnnuxer">Annexure C</h2>
+                            {% endif %}
                             <div class="d-flex justify-content-center my-5">
                                 <img class="proofImages" src="/media/{{file.filelink}}" alt="address"
                                     srcset="/media/{{file.filelink}}" />
@@ -502,9 +654,34 @@
                         </div>
                     </div>
                     <div class="pagebreak"></div>
+                    <div>
+                        <table class="dataTable text-left w-100">
+                            <tr class="font-weight-bold greyBg text-center">
+                                <td colspan="3">
+                                    Database Verification - India & Global
+                                    <br>
+                                    <h6>Reference #VI{{userextension_obj.reference}}</h6>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Record Not Found</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 2.5%; font-weight: bold; background-color: #f4f4f4;">Remarks</td>
+                                <td>{{verification_record.ecourt_remark}} <br> Refer to <i class="annexureNav">Annexure
+                                        D,E,F,G,H,I,J,K,L</i></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="pagebreak"></div>
                     <div class="d-flex justify-content-center">
                         <div>
                             {% for file in verification_record.passport_filename %}
+                            {% if file.idx == 0 %}
+                                <h2 class="headerAnnuxer">Annexure D</h2>
+                            {% elif file.idx == 1 %}
+                                <h2 class="headerAnnuxer">Annexure E</h2>
+                            {% endif %}
                             <div class="d-flex justify-content-center my-5">
                                 <img class="proofImages" src="/media/{{file.filelink}}" alt="address"
                                     srcset="/media/{{file.filelink}}" />
@@ -517,6 +694,8 @@
                             srcset="/media/{{verification_record.passport_verified}}"> -->
                     </div>
                     <div class="pagebreak"></div>
+                    <div class="pagebreak"></div>
+                    <h2 class="headerAnnuxer">Annexure F</h2>
                     <div class="tableContainer">
                         <table style="border-collapse:collapse;" cellspacing="0">
                             <tr style="height:19pt">
@@ -733,19 +912,17 @@
                             </tr>
                             <tr style="height:31pt">
                                 <td class="columnA">
-                                    <p class="s16"
-                                        style="padding-top: 3pt;padding-left: 4pt;padding-right: 2pt;text-indent: 0pt;text-align: left;">
+                                    <p class="s16">
                                         Federal Bureau of Investigation, USA [includes hijack suspects, most wanted
                                         &amp;
                                         FBI
                                         seeking
-                                        information]</p>
+                                        information]
+                                    </p>
                                 </td>
                                 <td class="columnB">
-                                    <p class="s16"
-                                        style="padding-top: 4pt;padding-right: 19pt;text-indent: 0pt;text-align: right;">
-                                        No
-                                        record
+                                    <p class="s16">
+                                        No record
                                     </p>
                                 </td>
                             </tr>
@@ -3546,6 +3723,22 @@
                             </tr>
                         </table>
                     </div>
+                    <div>
+                        <h4 class="my-5 d-flex justify-content-center">END OF REPORT</h4>
+                        <h5>Disclaimer:</h5>
+                        <p class="text-justify">
+                            Our reports are submitted in strict confidence and except where required by law, no
+                            information provided in our reports may be revealed directly or indirectly to any person
+                            except to those whose official duties require them to pass this report on in relation to
+                            which the report was requested by the Client of Vorkinsta, powered by Clariont India
+                            and USA neither warrants, vouches for, or authenticates the reliability of the information
+                            contained herein that the records are accurately reported as they were found at the
+                            source as of the date and time of this report, whether on a computer information system,
+                            retrieved by manual search, or telephonic interviews. The information provided
+                            herein shall not be construed to constitute a legal opinion; rather it is a compilation of
+                            public records and/or data for your review
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3556,14 +3749,19 @@
         onclick="window.location.href= '/candidate/{{verification_record.candidate.pk}}'">
         Cancel
     </button>
-    <button class="btn btn-primary" type="button" onclick="window.print()"> Print Report </button>
+    <button class="btn btn-primary" type="button"
+        onclick="document.title='{{verification_record.employee_store.candidate_fullname}} - Background Verification Report by Vorkinsta'; window.print(); return false;">
+        Print Report </button>
 </div>
 <div id="divFooter" class="d-flex justify-content-center footer-repeat">
-    <div class="text-center footerContainer">
+    <div>
         <h6>Confidential</h6>
-        <div>Website: bgv.vorkinsta.com</div>
-        <div>Email: verfication@vorkinsta.com</div>
-        <div>Landline: +91-2231402672</div>
+        <div class="text-center footerContainer">
+            <div>INDIA: 301, Saanvi Towers, Chanda Naik Nagar, Madhapur, Hyderabad-500033</div>
+            <div>USA: 1875 Century Park E, STE 1025, Los Angeles, California 90067</div>
+            <div>Website: bgv.vorkinsta.com Email: verfication@vorkinsta.com, Contact # USA: +1 323 300 4545, India #
+                040-40274546</div>
+        </div>
     </div>
 </div>
 

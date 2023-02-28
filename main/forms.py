@@ -4,8 +4,8 @@ from .models import *
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = employee_store
-        fields = ("candidate", "education", "employment", "aadhar", "pan", "passport", "address", "employment_file", "education_file", "passport_file", "aadhar_file", "form16_file")
-        labels = {'passport': 'Passport Number', 'address': 'Present Address From To', 'form16_file': 'Form 16', 'aadhar_file': 'Aadhar File', 'employment_file': 'Employment', 'education_file': 'Education'}
+        fields = ("candidate", "education", "employment", "aadhar", "pan", "passport", "address","address_period","country_location", "employment_file", "education_file", "passport_file", "aadhar_file", "form16_file")
+        labels = {'passport': 'Passport Number', 'address': 'Present Address',"address_period" : "Period of Stay [Present Address]","country_location" : "Country Location", 'form16_file': 'Form 16', 'aadhar_file': 'Aadhar File', 'employment_file': 'Employment', 'education_file': 'Education'}
         widgets = {
             "education" : forms.TextInput(attrs={'class': 'form-control'}),
             "employment" : forms.TextInput(attrs={'class': 'form-control'}),
@@ -15,6 +15,8 @@ class EmployeeForm(forms.ModelForm):
             "address" : forms.Textarea(attrs={'class': 'form-control', 'spellcheck': 'true'}),
             "education" : forms.TextInput(attrs={'class': 'form-control'}),
             "employment" : forms.TextInput(attrs={'class': 'form-control'}),
+            "address_period" : forms.TextInput(attrs={'class': 'form-control'}),
+            "country_location" : forms.TextInput(attrs={'class': 'form-control'}),
 
             "candidate" : forms.Select(attrs={'class': 'form-control'}),
             "education_status" : forms.Select(attrs={'class': 'form-control'}),

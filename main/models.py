@@ -20,6 +20,9 @@ class employee_store(models.Model):
     pan = models.CharField(max_length=10, null=True, blank=True)
     passport = models.CharField(max_length=20, null=True, blank=True)
     address = models.CharField(max_length=250, null=True, blank=True)
+    
+    address_period = models.CharField(max_length=50, null=True, blank=True)
+    country_location = models.CharField(max_length=100, null=True, blank=True)
 
     education = models.JSONField(default=list, null=True, blank=True)
     employment = models.JSONField(default=list, null=True, blank=True)
@@ -126,11 +129,12 @@ class admin_store(models.Model):
     def education_filename(self):
         filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'education', uploader_type = 'admin')
         filesList = []
-        for each in filesObject:
+        for index, each in enumerate(filesObject):
             filesList.append(
                 {
                     'filename': each.file.name.split("/")[3],
-                    'filelink': each.file
+                    'filelink': each.file,
+                    'idx': index
                 }
             )
         return filesList
@@ -139,11 +143,12 @@ class admin_store(models.Model):
     def employment_filename(self):
         filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'employment', uploader_type = 'admin')
         filesList = []
-        for each in filesObject:
+        for index, each in enumerate(filesObject):
             filesList.append(
                 {
                     'filename': each.file.name.split("/")[3],
-                    'filelink': each.file
+                    'filelink': each.file,
+                    'idx': index
                 }
             )
         return filesList
@@ -152,11 +157,12 @@ class admin_store(models.Model):
     def ecourt_filename(self):
         filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'ecourt', uploader_type = 'admin')
         filesList = []
-        for each in filesObject:
+        for index, each in enumerate(filesObject):
             filesList.append(
                 {
                     'filename': each.file.name.split("/")[3],
-                    'filelink': each.file
+                    'filelink': each.file,
+                    'idx': index
                 }
             )
         return filesList
@@ -165,11 +171,12 @@ class admin_store(models.Model):
     def address_filename(self):
         filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'address', uploader_type = 'admin')
         filesList = []
-        for each in filesObject:
+        for index, each in enumerate(filesObject):
             filesList.append(
                 {
                     'filename': each.file.name.split("/")[3],
-                    'filelink': each.file
+                    'filelink': each.file,
+                    'idx': index
                 }
             )
         return filesList
@@ -178,11 +185,12 @@ class admin_store(models.Model):
     def passport_filename(self):
         filesObject = documents_store.objects.filter(candidate_obj = self.candidate, document_type = 'passport', uploader_type = 'admin')
         filesList = []
-        for each in filesObject:
+        for index, each in enumerate(filesObject):
             filesList.append(
                 {
                     'filename': each.file.name.split("/")[3],
-                    'filelink': each.file
+                    'filelink': each.file,
+                    'idx': index
                 }
             )
         return filesList
