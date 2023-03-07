@@ -129,7 +129,6 @@ class SignUpView(GuestOnlyView, FormView):
             user_extension.user = user
             user_extension.save()
 
-
             send_activation_email(request, user.email, code)
 
             messages.success(

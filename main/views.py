@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import get_object_or_404, redirect, render, HttpResponse
-import os
+import os, sys
 from django.http import FileResponse
 import datetime
 
@@ -160,8 +160,12 @@ class ChangeLanguageView(TemplateView):
 def secureView(request, text, userid, file):
     if request.user.is_superuser and request.user.username == 'admin':
         filepath = 'uploads/'+ text + '/' + userid + '/' + file
-        document = get_object_or_404(documents_store, file=filepath)
-        response = FileResponse(document.file)
+        document = documents_store.objects.filter(file=filepath)
+        if document:
+            response = FileResponse(document[0].file)
+        else:
+            document_file = open('content/media/'+filepath, 'rb')
+            response = FileResponse(document_file)
         return response
     else:
         return HttpResponseRedirect(reverse('index'))
@@ -180,8 +184,8 @@ def UploadMultipleFiles(files, candidate_obj, uploader_type, admin_store_object,
         )
         filesList.append(
                 {
-                    'filename': documents_store_obj .file.name.split("/")[3],
-                    'filelink': documents_store_obj .file
+                    'filename': documents_store_obj.file.name.split("/")[3],
+                    'filelink': documents_store_obj.file
                 }
             )
     return filesList
