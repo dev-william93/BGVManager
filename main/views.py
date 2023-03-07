@@ -92,48 +92,48 @@ class AdminCandidatePageView(TemplateView):
             return HttpResponseRedirect(reverse('index'))
         
     def post(self, request, pk):
-        try:
-            if request.user.is_superuser:
-                verification_record = admin_store.objects.filter(candidate=pk)
-                if request.FILES:
-                    verification_record_obj = verification_record.first()
-                    if request.FILES.getlist('education_verified'):
-                        UploadMultipleFiles(request.FILES.getlist('education_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'education', True)
-                        verification_record_obj.education_verified = request.FILES.get('education_verified')
-                    if request.FILES.getlist('employment_verified'):
-                        UploadMultipleFiles(request.FILES.getlist('employment_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'employment', True)
-                        verification_record_obj.employment_verified = request.FILES.get('employment_verified')
-                    if request.FILES.getlist('ecourt_verified'):
-                        UploadMultipleFiles(request.FILES.getlist('ecourt_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'ecourt', True)
-                        verification_record_obj.ecourt_verified = request.FILES.get('ecourt_verified')
-                    if request.FILES.getlist('address_verified'):
-                        UploadMultipleFiles(request.FILES.getlist('address_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'address', True)
-                        verification_record_obj.address_verified = request.FILES.get('address_verified')
-                    if request.FILES.getlist('passport_verified'):
-                        UploadMultipleFiles(request.FILES.getlist('passport_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'passport', True)
-                        verification_record_obj.passport_verified = request.FILES.get('passport_verified')
-                    verification_record_obj.save()
+        # try:
+        if request.user.is_superuser:
+            verification_record = admin_store.objects.filter(candidate=pk)
+            if request.FILES:
+                verification_record_obj = verification_record.first()
+                if request.FILES.getlist('education_verified'):
+                    UploadMultipleFiles(request.FILES.getlist('education_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'education', True)
+                    verification_record_obj.education_verified = request.FILES.get('education_verified')
+                if request.FILES.getlist('employment_verified'):
+                    UploadMultipleFiles(request.FILES.getlist('employment_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'employment', True)
+                    verification_record_obj.employment_verified = request.FILES.get('employment_verified')
+                if request.FILES.getlist('ecourt_verified'):
+                    UploadMultipleFiles(request.FILES.getlist('ecourt_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'ecourt', True)
+                    verification_record_obj.ecourt_verified = request.FILES.get('ecourt_verified')
+                if request.FILES.getlist('address_verified'):
+                    UploadMultipleFiles(request.FILES.getlist('address_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'address', True)
+                    verification_record_obj.address_verified = request.FILES.get('address_verified')
+                if request.FILES.getlist('passport_verified'):
+                    UploadMultipleFiles(request.FILES.getlist('passport_verified'), verification_record_obj.candidate, 'admin', verification_record_obj, 'passport', True)
+                    verification_record_obj.passport_verified = request.FILES.get('passport_verified')
+                verification_record_obj.save()
 
-                dict_request = request.POST.dict()
+            dict_request = request.POST.dict()
 
-                dict_request['csrfmiddlewaretoken'] = ''
-                dict_request['employment_verified'] = ''
-                dict_request['ecourt_verified'] = ''
-                dict_request['address_verified'] = ''
-                dict_request['passport_verified'] = ''
-                dict_request['education_verified'] = ''
-                
-                dict_request.pop('csrfmiddlewaretoken')
-                dict_request.pop('employment_verified')
-                dict_request.pop('ecourt_verified')
-                dict_request.pop('address_verified')
-                dict_request.pop('passport_verified')
-                dict_request.pop('education_verified')
-                
-                verification_record.update(**dict_request)
-                return HttpResponseRedirect(reverse('AdminCandidatePageView', args=[pk]))
-        except:
-            return HttpResponseRedirect(reverse('index'))
+            dict_request['csrfmiddlewaretoken'] = ''
+            dict_request['employment_verified'] = ''
+            dict_request['ecourt_verified'] = ''
+            dict_request['address_verified'] = ''
+            dict_request['passport_verified'] = ''
+            dict_request['education_verified'] = ''
+            
+            dict_request.pop('csrfmiddlewaretoken')
+            dict_request.pop('employment_verified')
+            dict_request.pop('ecourt_verified')
+            dict_request.pop('address_verified')
+            dict_request.pop('passport_verified')
+            dict_request.pop('education_verified')
+            
+            verification_record.update(**dict_request)
+            return HttpResponseRedirect(reverse('AdminCandidatePageView', args=[pk]))
+        # except:
+        #     return HttpResponseRedirect(reverse('index'))
 
 class CandidateReportPageView(TemplateView):
     model = admin_store
@@ -158,7 +158,7 @@ class ChangeLanguageView(TemplateView):
 
 @login_required
 def secureView(request, text, userid, file):
-    if request.user.is_superuser and request.user.username == 'admin':
+    if request.user.is_superuser:
         filepath = 'uploads/'+ text + '/' + userid + '/' + file
         document = documents_store.objects.filter(file=filepath)
         if document:
