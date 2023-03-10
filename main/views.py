@@ -129,7 +129,11 @@ class AdminCandidatePageView(TemplateView):
             dict_request.pop('address_verified')
             dict_request.pop('passport_verified')
             dict_request.pop('education_verified')
-            
+
+            # YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]
+
+            dict_request['updated_date']= datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S.%f")
+            # print(dict_request)
             verification_record.update(**dict_request)
             return HttpResponseRedirect(reverse('AdminCandidatePageView', args=[pk]))
         # except:

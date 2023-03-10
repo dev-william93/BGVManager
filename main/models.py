@@ -71,7 +71,7 @@ class employee_store(models.Model):
         return name
 
     def save(self, *args, **kwargs):
-        self.updated_date = datetime.now()
+        self.updated_date = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S.%f")
         super(employee_store, self).save(*args, **kwargs)
 
 
@@ -122,7 +122,7 @@ class admin_store(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.updated_date = datetime.now()
+        self.updated_date = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S.%f")
         super(admin_store, self).save(*args, **kwargs)
 
     @property
@@ -232,5 +232,6 @@ class documents_store(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.updated_date = datetime.now()
+        self.updated_date = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S.%f")
+        print('Timestamp', self.updated_date)
         super(documents_store, self).save(*args, **kwargs)
