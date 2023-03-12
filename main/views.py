@@ -75,21 +75,21 @@ class AdminCandidatePageView(TemplateView):
     template_name = 'main/each_candidate.html'
     
     def get(self, request, pk):
-        try:
-            verification_record = admin_store.objects.filter(candidate=pk)
-            VerificationFormWithInitial = VerificationForm(initial={
-                'education_verified': verification_record.first().education_verified,
-                'employment_verified': verification_record.first().employment_verified,
-                'ecourt_verified': verification_record.first().ecourt_verified,
-                'address_verified': verification_record.first().address_verified,
-                'passport_verified': verification_record.first().passport_verified
-            } )
-            if verification_record:
-                return render(request, 'main/admin/each_candidate.html', {"employee_record": verification_record.first(), "pk": pk, "form": VerificationFormWithInitial})
-            else:
-                return HttpResponseRedirect(reverse('index'))
-        except:
+        # try:
+        verification_record = admin_store.objects.filter(candidate=pk)
+        VerificationFormWithInitial = VerificationForm(initial={
+            'education_verified': verification_record.first().education_verified,
+            'employment_verified': verification_record.first().employment_verified,
+            'ecourt_verified': verification_record.first().ecourt_verified,
+            'address_verified': verification_record.first().address_verified,
+            'passport_verified': verification_record.first().passport_verified
+        } )
+        if verification_record:
+            return render(request, 'main/admin/each_candidate.html', {"employee_record": verification_record.first(), "pk": pk, "form": VerificationFormWithInitial})
+        else:
             return HttpResponseRedirect(reverse('index'))
+        # except:
+        #     return HttpResponseRedirect(reverse('index'))
         
     def post(self, request, pk):
         # try:
@@ -144,17 +144,17 @@ class CandidateReportPageView(TemplateView):
     template_name = 'main/reports.html'
     
     def get(self, request, pk, businessUser):
-        try:
-            if request.user.is_superuser:
-                verification_record = admin_store.objects.filter(candidate=pk)
-                if verification_record:
-                    userextension_obj = UserExtension.objects.get(user=pk)
-                    collegeName = verification_record.first().employee_store.education[0]
-                    return render(request, 'main/admin/reports.html', {"verification_record": verification_record.first(), 'dateTime': datetime.datetime.now(), 'collegeName': collegeName, 'businessUser': businessUser, 'userextension_obj': userextension_obj })
-            else:
-                return HttpResponseRedirect(reverse('index'))
-        except:
+        # try:
+        if request.user.is_superuser:
+            verification_record = admin_store.objects.filter(candidate=pk)
+            if verification_record:
+                userextension_obj = UserExtension.objects.get(user=pk)
+                collegeName = verification_record.first().employee_store.education[0]
+                return render(request, 'main/admin/reports.html', {"verification_record": verification_record.first(), 'dateTime': datetime.datetime.now(), 'collegeName': collegeName, 'businessUser': businessUser, 'userextension_obj': userextension_obj })
+        else:
             return HttpResponseRedirect(reverse('index'))
+        # except:
+        #     return HttpResponseRedirect(reverse('index'))
 
 class ChangeLanguageView(TemplateView):
     template_name = 'main/change_language.html'

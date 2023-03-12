@@ -134,6 +134,7 @@ class admin_store(models.Model):
                 {
                     'filename': each.file.name.split("/")[3],
                     'filelink': each.file,
+                    'updated': each.updated_date,
                     'idx': index
                 }
             )
@@ -148,6 +149,7 @@ class admin_store(models.Model):
                 {
                     'filename': each.file.name.split("/")[3],
                     'filelink': each.file,
+                    'updated': each.updated_date,
                     'idx': index
                 }
             )
@@ -162,6 +164,7 @@ class admin_store(models.Model):
                 {
                     'filename': each.file.name.split("/")[3],
                     'filelink': each.file,
+                    'updated': each.updated_date,
                     'idx': index
                 }
             )
@@ -176,6 +179,7 @@ class admin_store(models.Model):
                 {
                     'filename': each.file.name.split("/")[3],
                     'filelink': each.file,
+                    'updated': each.updated_date,
                     'idx': index
                 }
             )
@@ -190,6 +194,7 @@ class admin_store(models.Model):
                 {
                     'filename': each.file.name.split("/")[3],
                     'filelink': each.file,
+                    'updated': each.updated_date,
                     'idx': index
                 }
             )

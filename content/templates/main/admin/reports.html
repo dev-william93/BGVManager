@@ -226,8 +226,7 @@
 
     .proofImages {
         max-width: 90vw;
-        max-height: 80vh;
-        margin-top: 5vh;
+        max-height: 75vh;
     }
 
     @media print {
@@ -368,7 +367,7 @@
                         </tr>
                         <tr>
                             <td class="w-25">Date Initiated</td>
-                            <td>{{verification_record.employee_store.created_date|date:"M d, Y"}}</td>
+                            <td>{{verification_record.employee_store.created_date|date:"M d, Y h:m a"}}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Date of Report</td>
@@ -407,32 +406,36 @@
                             </td>
                         </tr>
                         <tr class="font-weight-bold">
-                            <td>Type of Check</td>
+                            <td style="width: 20%;">Type of Check</td>
                             <td class="text-center last2">Verification Date</td>
                             <td class="text-center">Status</td>
                         </tr>
                         <tr>
-                            <td>Education verification</td>
-                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
+                            <td style="width: 60%;">Education verification</td>
+                            <td class="last2">{{verification_record.education_filename.0.updated}}</td>
+                            <!-- <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td> -->
                             <td class="statusData"
                                 style="color: {{verification_record.education_status|GetDisplayName}}">
                                 {{verification_record.education_status|GetDisplayName}}</td>
                         </tr>
                         <tr>
-                            <td>Present Address</td>
-                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
+                            <td style="width: 60%;">Present Address</td>
+                            <td class="last2">{{verification_record.address_filename.0.updated}}</td>
+                            <!-- <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td> -->
                             <td class="statusData" style="color: {{verification_record.address_status|GetDisplayName}}">
                                 {{verification_record.address_status|GetDisplayName}}</td>
                         </tr>
                         <tr>
-                            <td>Database check for India - Criminal and Civil</td>
-                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
+                            <td style="width: 60%;">Database check for India - Criminal and Civil</td>
+                            <td class="last2">{{verification_record.ecourt_filename.0.updated}}</td>
+                            <!-- <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td> -->
                             <td class="statusData" style="color: {{verification_record.court_status|GetDisplayName}}">
                                 {{verification_record.court_status|GetDisplayName}}</td>
                         </tr>
                         <tr>
-                            <td>Database check for Global - Criminal and Civil</td>
-                            <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td>
+                            <td style="width: 60%;">Database check for Global - Criminal and Civil</td>
+                            <td class="last2">{{verification_record.passport_filename.0.updated}}</td>
+                            <!-- <td class="last2">{{verification_record.updated_date|date:"M d, Y h:m a"}}</td> -->
                             <td class="statusData"
                                 style="color: {{verification_record.passport_status|GetDisplayName}}">
                                 {{verification_record.passport_status|GetDisplayName}}</td>
@@ -587,7 +590,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 33.3%; font-weight: bold; background-color: #f4f4f4;">
-                                    Country Location
+                                    Country
                                 </td>
                                 <td style="width: 33.3%;">
                                     {{verification_record.employee_store.country_location}}
@@ -637,23 +640,22 @@
                         </table>
                     </div>
                     <div class="pagebreak"></div>
+                    {% for file in verification_record.address_filename %}
+                    {% if file.idx == 0 %}
+                        <h2 class="headerAnnuxer">Annexure B</h2>
+                    {% elif file.idx == 1 %}
+                        <h2 class="headerAnnuxer">Annexure C</h2>
+                    {% endif %}
                     <div class="d-flex justify-content-center">
                         <div>
-                            {% for file in verification_record.address_filename %}
-                            {% if file.idx == 0 %}
-                                <h2 class="headerAnnuxer">Annexure B</h2>
-                            {% elif file.idx == 1 %}
-                                <h2 class="headerAnnuxer">Annexure C</h2>
-                            {% endif %}
                             <div class="d-flex justify-content-center my-5">
                                 <img class="proofImages" src="/media/{{file.filelink}}" alt="address"
                                     srcset="/media/{{file.filelink}}" />
                             </div>
-                            <div class="pagebreak"></div>
-                            {% endfor %}
                         </div>
                     </div>
                     <div class="pagebreak"></div>
+                    {% endfor %}
                     <div>
                         <table class="dataTable text-left w-100">
                             <tr class="font-weight-bold greyBg text-center">
@@ -674,27 +676,21 @@
                         </table>
                     </div>
                     <div class="pagebreak"></div>
+                    {% for file in verification_record.passport_filename %}
+                    {% if file.idx == 0 %}
+                        <h2 class="headerAnnuxer">Annexure D</h2>
+                    {% elif file.idx == 1 %}
+                        <h2 class="headerAnnuxer">Annexure E</h2>
+                    {% endif %}
                     <div class="d-flex justify-content-center">
                         <div>
-                            {% for file in verification_record.passport_filename %}
-                            {% if file.idx == 0 %}
-                                <h2 class="headerAnnuxer">Annexure D</h2>
-                            {% elif file.idx == 1 %}
-                                <h2 class="headerAnnuxer">Annexure E</h2>
-                            {% endif %}
                             <div class="d-flex justify-content-center my-5">
-                                <img class="proofImages" src="/media/{{file.filelink}}" alt="address"
-                                    srcset="/media/{{file.filelink}}" />
+                                <img class="proofImages" src="/media/{{file.filelink}}" alt="address" srcset="/media/{{file.filelink}}" />
                             </div>
-                            <div class="pagebreak"></div>
-                            {% endfor %}
                         </div>
-                        <!-- <img style="max-width: 90vw; max-height: 85vh;"
-                            src="/media/{{verification_record.passport_verified}}" alt="passport"
-                            srcset="/media/{{verification_record.passport_verified}}"> -->
                     </div>
                     <div class="pagebreak"></div>
-                    <div class="pagebreak"></div>
+                    {% endfor %}
                     <h2 class="headerAnnuxer">Annexure F</h2>
                     <div class="tableContainer">
                         <table style="border-collapse:collapse;" cellspacing="0">

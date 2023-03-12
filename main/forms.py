@@ -5,7 +5,7 @@ class EmployeeForm(forms.ModelForm):
     class Meta:
         model = employee_store
         fields = ("candidate", "education", "employment", "aadhar", "pan", "passport", "address","address_period","country_location", "employment_file", "education_file", "passport_file", "aadhar_file", "form16_file")
-        labels = {'passport': 'Passport Number', 'address': 'Present Address',"address_period" : "Period of Stay [Present Address]","country_location" : "Country Location", 'form16_file': 'Form 16', 'aadhar_file': 'Aadhar File', 'employment_file': 'Employment', 'education_file': 'Education'}
+        labels = {'passport': 'Passport Number', 'address': 'Present Address',"address_period" : "Period of Stay [Present Address]","country_location" : "Country Location", 'form16_file': 'Form 16 Document', 'aadhar_file': 'Aadhar Document', 'employment_file': 'Employment Document', 'education_file': 'Education Document', 'passport_file': 'Passport Document'}
         widgets = {
             "education" : forms.TextInput(attrs={'class': 'form-control'}),
             "employment" : forms.TextInput(attrs={'class': 'form-control'}),

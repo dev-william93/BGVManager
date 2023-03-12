@@ -53,8 +53,8 @@
 <div class="main_container m-auto" style="display:flex; justify-content: center; margin: auto;">
     <div class="w-100" style="align-self: center; ">
         <div class="w-100" class="customForm">
-            <h3 class="card-header rounded">
-                Submit Documents
+            <h3 class="card-header rounded text-capitalize ">
+                {{request.user.first_name}} {{request.user.last_name}} - Submit Documents for Verification
             </h3>
             <form class="w-100" id="employeeForm" method='post' enctype="multipart/form-data"
                 onsubmit="formSubmission()">
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <input required type="text" name="doj" class="form-control from"
+                                        <input required type="text" name="doj" class="form-control from input"
                                             placeholder="Date Of Joining">
                                     </div>
                                     <div class="col">
@@ -91,9 +91,8 @@
                                 <div class="row mt-3">
                                     <div class="col">
                                         <input required type="tel" name="HRContact" class="form-control"
-                                        required on invalid "this.setCustomValidity('Please enter HR Phone')" on
-                                        input="this.setCustomValidity('')" pattern = "[0-9]{3}[0-9]{3}[0-9]{4}"
-                                            placeholder="HR Contact Number">
+                                        maxlength="10" required oninvalid="this.setCustomValidity('Please match the format [9876543210]')" pattern = "[0-9]{3}[0-9]{3}[0-9]{4}"
+                                        placeholder="HR Contact Number">
                                     </div>
                                     <div class="col">
                                         <input required type="email" name="HREmail" class="form-control"
@@ -139,12 +138,17 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col">
-                                        <input required type="month" name="yoj" class="form-control yoj" 
-                                            placeholder="Month & Year of Issue/Passing Certificate">
-                                    </div>
-                                    <div class="col">
                                         <input required type="text" name="yog" class="form-control jog" 
                                             placeholder="Certificate No">
+                                    </div>
+                                    <div class="col d-flex">
+                                        <label for="yoj" class="form-label w-100 align-self-center">
+                                            <u>
+                                                Month & Year of Passing
+                                            </u>
+                                        </label>
+                                        <input required type="month" name="yoj" class="form-control yoj" 
+                                            placeholder="Month & Year of Issue/Passing Certificate">
                                     </div>
                                 </div>
                             </div>
@@ -160,26 +164,26 @@
                         <div class="form-group mt-3">
                             <label for="aadhar">Aadhar Number<i class="requiredStar" style="color: red;">*</i></label>
                             <input type="text" name="aadhar" class="form-control" required="true" maxlength="12"
-                            required on invalid "this.setCustomValidity('Please enter Adhar Card Number(111111111111)')" on
+                            required oninvalid="this.setCustomValidity('Please enter Adhar Card Number(111111111111)')" on
                             input="this.setCustomValidity('')" pattern = "[0-9]{4}[0-9]{4}[0-9]{4}"
-                                placeholder="Aadhar Number" title="" id="aadhar">
+                                placeholder="Ex: 1234 5678 1234 5678" title="" id="aadhar">
                         </div>
                         <div class="form-group">
                             <label for="pan">Pan Number<i class="requiredStar" style="color: red;">*</i></label>
                             <input type="text" name="pan" class="form-control" required="true" maxlength="10"
-                            required on invalid "this.setCustomValidity('Please enter your Pan Card Numebr (AAAAA1111A)')" on
+                            required oninvalid="this.setCustomValidity('Please enter your Pan Card Numebr (AAAAA1111A)')" on
                             input="this.setCustomValidity('')" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
-                                placeholder="Pan Number" title="" id="pan">
+                                placeholder="Ex: ABCDEF1234G" title="" id="pan">
                         </div>
                         <div class="form-group">
                             <label for="passport">Passport Number<i class="requiredStar" style="color: red;">*</i></label>
                             <input type="text" name="passport" class="form-control" required="true" maxlength="20"
-                                placeholder="Passport Number" title="" id="passport" pattern = "[A-Z]{1}[0-9]{7}">
+                                placeholder="Ex: A1234567" title="" id="passport" pattern = "[A-Z]{1}[0-9]{7}">
                         </div>
                         <div class="form-group">
                             <label for="address">Present Address<i class="requiredStar" style="color: red;">*</i></label>
                             <textarea name="address" cols="40" rows="10" class="form-control" required="true"
-                                maxlength="250" placeholder="Present Address" title="" id="address"
+                                maxlength="250" placeholder="Full Address" title="" id="address"
                                 spellcheck="false"></textarea>
                         </div>
                         <div class="row">
@@ -189,16 +193,16 @@
                                 placeholder="2000" title="Period of Stay" id="address_period">
                             </div>
                             <div class="form-group col">
-                            <label for="passport">Country Location<i class="requiredStar" style="color: red;">*</i></label>
+                            <label for="passport">Country<i class="requiredStar" style="color: red;">*</i></label>
                             <input type="text" name="country_location" class="form-control" required="true" maxlength="20"
-                                placeholder="Country Location" title="Country Location" id="country_location">
+                                placeholder="Country" title="Country" id="country_location">
                             </div>
                         </div>
                     </div>
                     <div class="mt-2 border border-dark rounded p-3">
                         <div class="d-flex justify-content-between">
                             <h5>
-                                Upload Section<i class="requiredStar" style="color: red;">*</i>
+                                Upload Section [pdf, docx]<i class="requiredStar" style="color: red;">*</i>
                             </h5>
                             <!-- <button type="submit" style="height: fit-content;" class="btn btn-warning"> Save </button> -->
                         </div>
@@ -291,10 +295,11 @@
             formEducation.push({
                 "collegeName": collegeName[idx].value,
                 "degree": degree[idx].value,
-                "monthYearOfIssued": yoj[idx].value,
+                "monthYearOfIssued": new Date(yoj[idx].value).getMonth()+1 + " - " + new Date(yoj[idx].value).getFullYear(),
                 "certificateNo": yog[idx].value,
             })
         });
+        
 
         document.getElementById("id_education").value = JSON.stringify(formEducation);
         document.getElementById("id_employment").value = JSON.stringify(formEmployer);
@@ -307,12 +312,14 @@
         document.getElementById("id_country_location").value = document.getElementById("country_location").value;
     }
 
+
 </script>
 
 <script>
     function dynamicDatapicker(fromId, toId){
         $("#"+fromId).datepicker({
         defaultDate: "+1w",
+        changeYear: true,
         changeMonth: true,
         numberOfMonths: 1,
         onClose: function( selectedDate ) {
@@ -321,6 +328,7 @@
         });
         $("#"+toId).datepicker({
         defaultDate: "+1w",
+        changeYear: true,
         changeMonth: true,
         numberOfMonths: 1,
         onClose: function( selectedDate ) {
